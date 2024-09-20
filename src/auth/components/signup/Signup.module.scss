@@ -1,0 +1,141 @@
+$lapis-lazuli: #22577a;
+$verdigris: #38a3a5;
+$emerald: #57cc99;
+$light-green: #80ed99;
+$tea-green: #c7f9cc;
+
+.signupContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to bottom right,
+    $tea-green,
+    $light-green,
+    $emerald
+  );
+}
+
+.card {
+  width: 100%;
+  max-width: 450px;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  color: $lapis-lazuli;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $lapis-lazuli;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: $verdigris;
+  font-size: 0.875rem;
+}
+
+.nameGroup {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: $lapis-lazuli;
+  font-weight: 600;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $verdigris;
+  width: 20px;
+  height: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  border: 1px solid $emerald;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: $lapis-lazuli;
+    box-shadow: 0 0 0 2px rgba($lapis-lazuli, 0.2);
+  }
+}
+
+.button {
+  width: 100%;
+  background-color: $lapis-lazuli;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $verdigris;
+  }
+}
+
+.cardFooter {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.loginText {
+  font-size: 0.875rem;
+  color: $verdigris;
+}
+
+.loginLink {
+  color: $lapis-lazuli;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
