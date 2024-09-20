@@ -1,0 +1,240 @@
+$lapis-lazuli: #22577a;
+$verdigris: #38a3a5;
+$emerald: #57cc99;
+$light-green: #80ed99;
+$tea-green: #c7f9cc;
+
+.landingPage {
+  font-family: "Arial", sans-serif;
+  color: $lapis-lazuli;
+  line-height: 1.6;
+}
+
+.header {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $lapis-lazuli;
+}
+
+.logoIcon {
+  margin-right: 0.5rem;
+}
+
+.navLinks {
+  display: flex;
+  list-style: none;
+
+  li {
+    margin-left: 2rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: $lapis-lazuli;
+    font-weight: 500;
+    transition: color 0.3s;
+
+    &:hover {
+      color: $verdigris;
+    }
+  }
+}
+
+.loginButton {
+  background-color: $emerald;
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s !important;
+
+  &:hover {
+    background-color: $verdigris !important;
+  }
+}
+
+.hero {
+  background: linear-gradient(135deg, $tea-green, $light-green);
+  padding: 8rem 5% 6rem;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+}
+
+.ctaButton {
+  background-color: $lapis-lazuli;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    background-color: $verdigris;
+  }
+
+  svg {
+    margin-left: 0.5rem;
+  }
+}
+
+.features,
+.testimonials {
+  padding: 4rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+  }
+}
+
+.featureGrid,
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.featureCard,
+.testimonialCard {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.featureIcon {
+  color: $emerald;
+  margin-bottom: 1rem;
+}
+
+.testimonials {
+  background-color: $tea-green;
+}
+
+.testimonialCard {
+  p {
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  cite {
+    font-weight: 600;
+    color: $verdigris;
+  }
+}
+
+.cta {
+  background: linear-gradient(135deg, $emerald, $verdigris);
+  color: white;
+  text-align: center;
+  padding: 4rem 5%;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .ctaButton {
+    background-color: white;
+    color: $lapis-lazuli;
+
+    &:hover {
+      background-color: $tea-green;
+    }
+  }
+}
+
+.footer {
+  background-color: $lapis-lazuli;
+  color: white;
+  padding: 2rem 5%;
+}
+
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .navLinks {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+
+    li {
+      margin: 0.5rem 0;
+    }
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .footerContent {
+    flex-direction: column;
+    text-align: center;
+
+    p {
+      margin-top: 1rem;
+    }
+  }
+}

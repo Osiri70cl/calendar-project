@@ -1,0 +1,249 @@
+$lapis-lazuli: #22577a;
+$verdigris: #38a3a5;
+$emerald: #57cc99;
+$light-green: #80ed99;
+$tea-green: #c7f9cc;
+
+.calendarPage {
+  font-family: "Arial", sans-serif;
+  color: $lapis-lazuli;
+  background-color: $tea-green;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.viewSelector {
+  padding: 0.5rem;
+  border: 1px solid $verdigris;
+  border-radius: 4px;
+  background-color: white;
+  color: $lapis-lazuli;
+  font-size: 1rem;
+}
+
+.addEventButton {
+  display: flex;
+  align-items: center;
+  background-color: $emerald;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $verdigris;
+  }
+
+  svg {
+    margin-right: 0.5rem;
+  }
+}
+
+.calendarContainer {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: $lapis-lazuli;
+  color: white;
+
+  h2 {
+    font-size: 1.5rem;
+    text-transform: capitalize;
+  }
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.weekView,
+.monthView {
+  display: grid;
+  gap: 1px;
+  background-color: $light-green;
+}
+
+.weekView {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.monthView {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekday {
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+  background-color: $verdigris;
+  color: white;
+}
+
+.calendarDay,
+.weekDay {
+  background-color: white;
+  min-height: 100px;
+  padding: 0.5rem;
+  position: relative;
+}
+
+.otherMonth {
+  opacity: 0.5;
+}
+
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.dayName,
+.dayNumber {
+  font-size: 0.875rem;
+  color: $lapis-lazuli;
+}
+
+.dayEvents {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.event {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meeting {
+  background-color: $lapis-lazuli;
+}
+
+.appointment {
+  background-color: $verdigris;
+}
+
+.task {
+  background-color: $emerald;
+}
+
+.sixMonthView {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.miniMonth {
+  background-color: white;
+  border-radius: 4px;
+  padding: 0.5rem;
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+}
+
+.miniMonthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  font-size: 0.75rem;
+}
+
+.miniWeekday {
+  text-align: center;
+  padding: 0.25rem;
+  background-color: $verdigris;
+  color: white;
+}
+
+.miniDay {
+  text-align: center;
+  padding: 0.25rem;
+  position: relative;
+}
+
+.eventIndicator {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: $emerald;
+}
+
+@media (max-width: 768px) {
+  .calendarPage {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sixMonthView {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .calendarDay,
+  .weekDay {
+    min-height: 80px;
+    font-size: 0.75rem;
+  }
+
+  .event {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.625rem;
+  }
+}
