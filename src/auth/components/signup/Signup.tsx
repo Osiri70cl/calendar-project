@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CalendarDays, User, Mail, Lock } from "lucide-react";
-import styles from "./signup.module.scss";
+import styles from "./Signup.module.scss";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signupUser } from "@actions/user";
