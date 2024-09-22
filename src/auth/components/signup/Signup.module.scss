@@ -17,6 +17,12 @@ $tea-green: #c7f9cc;
   );
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .card {
   width: 100%;
   max-width: 450px;

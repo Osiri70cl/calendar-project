@@ -1,0 +1,259 @@
+.calendarPage {
+  font-family: "Arial", sans-serif;
+  color: $lapis-lazuli;
+  background-color: $tea-green;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.viewSelector {
+  padding: 0.5rem;
+  border: 1px solid $verdigris;
+  border-radius: 4px;
+  background-color: white;
+  color: $lapis-lazuli;
+  font-size: 1rem;
+}
+
+.addEventButton {
+  display: flex;
+  align-items: center;
+  background-color: $emerald;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $verdigris;
+  }
+
+  svg {
+    margin-right: 0.5rem;
+  }
+}
+
+.calendarContainer {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: $lapis-lazuli;
+  color: white;
+
+  h2 {
+    font-size: 1.5rem;
+    text-transform: capitalize;
+  }
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.weekView {
+  display: flex;
+  flex-direction: column;
+}
+
+.weekDayLabels {
+  display: flex;
+  border-bottom: 1px solid $light-green;
+}
+
+.dayLabel {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+  background-color: $verdigris;
+  color: white;
+}
+
+.weekGrid {
+  display: flex;
+  height: 600px;
+  overflow-y: auto;
+}
+
+.hourLabels {
+  width: 60px;
+  border-right: 1px solid $light-green;
+}
+
+.hourLabel {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: $lapis-lazuli;
+}
+
+.dayColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hourCell {
+  height: 60px;
+  border-bottom: 1px solid $light-green;
+  border-right: 1px solid $light-green;
+  padding: 0.25rem;
+}
+
+.monthView {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background-color: $light-green;
+}
+
+.weekday {
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+  background-color: $verdigris;
+  color: white;
+}
+
+.calendarDay {
+  background-color: white;
+  min-height: 100px;
+  padding: 0.5rem;
+  position: relative;
+}
+
+.otherMonth {
+  opacity: 0.5;
+}
+
+.dayNumber {
+  font-size: 0.875rem;
+  color: $lapis-lazuli;
+}
+
+.event {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.25rem;
+}
+
+.meeting {
+  background-color: $lapis-lazuli;
+}
+
+.appointment {
+  background-color: $verdigris;
+}
+
+.task {
+  background-color: $emerald;
+}
+
+.sixMonthView {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.miniMonth {
+  background-color: white;
+  border-radius: 4px;
+  padding: 0.5rem;
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+}
+
+.miniMonthGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.weekNumber {
+  text-align: center;
+  padding: 0.25rem;
+  background-color: $light-green;
+  color: $lapis-lazuli;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .calendarPage {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sixMonthView {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .weekGri d {
+    height: 400px;
+  }
+
+  .hourLabel,
+  .hourCell {
+    height: 40px;
+  }
+
+  .event {
+    font-size: 0.625rem;
+  }
+}

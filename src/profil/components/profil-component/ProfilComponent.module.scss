@@ -77,7 +77,9 @@ $tea-green: #c7f9cc;
 
 .infoContainer {
   width: 100%;
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .infoGroup {
@@ -88,13 +90,9 @@ $tea-green: #c7f9cc;
 
 .icon {
   color: $lapis-lazuli;
-  margin-right: 1rem;
-}
-
-.label {
-  font-size: 0.875rem;
-  color: $verdigris;
-  margin-bottom: 0.25rem;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .value {
@@ -107,7 +105,7 @@ $tea-green: #c7f9cc;
   background-color: $lapis-lazuli;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;

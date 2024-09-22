@@ -17,6 +17,10 @@ interface SignupFormValues {
   name: string;
 }
 
+interface JwtPayload {
+  userId: number;
+}
+
 export async function loginUser(data: FormValues) {
   const { email, password } = data;
 
@@ -37,9 +41,7 @@ export async function loginUser(data: FormValues) {
       };
     }
 
-    console.log("Comparing passwords");
     const validPassword = await compare(password, user.password);
-    console.log("Password valid:", validPassword ? "Yes" : "No");
 
     if (!validPassword) {
       return {
@@ -59,7 +61,7 @@ export async function loginUser(data: FormValues) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 3600, // 1 hour
+      maxAge: 2592000,
       path: "/",
     });
 
@@ -111,17 +113,100 @@ export async function signupUser(data: SignupFormValues) {
       { expiresIn: "1h" }
     );
 
-    cookies().set("tokenCalendar", token, {
+    cookies().set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 3600, // 1 hour
+      maxAge: 2592000,
       path: "/",
     });
 
     return { user: newUser };
   } catch (error: unknown) {
     console.error("Failed to signup user:", error);
+    return {
+      errors: {
+        _form: ["An unexpected error occurred. Please try again."],
+      },
+    };
+  }
+}
+
+export async function getUserByToken(token: string) {
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload;
+
+    const userId = decoded.userId;
+
+    const user = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      },
+    });
+
+    if (!user) {
+      return {
+        errors: {
+          _form: ["User not found"],
+        },
+      };
+    }
+
+    return { user };
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      return {
+        errors: {
+          _form: ["Invalid or expired token"],
+        },
+      };
+    }
+    console.error("Failed to get user by token:", error);
+    return {
+      errors: {
+        _form: ["An unexpected error occurred. Please try again."],
+      },
+    };
+  }
+}
+
+export async function updateUser(data: any) {
+  const { name, email } = data;
+
+  try {
+    const existingUser = await db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    const newUser = await db.user.update({
+      data: {
+        name,
+        email,
+      },
+      where: {
+        id: existingUser.id,
+      },
+    });
+
+    return {
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+    };
+  } catch (error: unknown) {
+    console.error("Failed to update user:", error);
     return {
       errors: {
         _form: ["An unexpected error occurred. Please try again."],

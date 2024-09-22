@@ -20,14 +20,8 @@ export default function Home() {
           </div>
           <ul className={styles.navLinks}>
             <li>
-              <a href="#features">Features</a>
-            </li>
-            <li>
-              <a href="#testimonials">Testimonials</a>
-            </li>
-            <li>
               <Link href="/connexion" className={styles.navLink}>
-                Log in
+                Connexion
               </Link>
             </li>
           </ul>
@@ -36,100 +30,45 @@ export default function Home() {
 
       <main>
         <section className={styles.hero}>
-          <h1>Streamline Your Scheduling</h1>
+          <h1>Devenez maitre de votre temps</h1>
           <p>
-            The professional calendar solution for city councils, medical
-            practices, construction teams, and more.
+            Un calendrier complet pour tous vos événements, de la réunion à la
+            prise de rendez-vous en passant par les annonces pour votre ville.
           </p>
-          <button className={styles.ctaButton}>
-            Get Started <ArrowRight size={20} />
-          </button>
+          <Link href={"/inscription"} className={styles.ctaButton}>
+            Je m'inscris <ArrowRight size={20} />
+          </Link>
         </section>
-
         <section id="features" className={styles.features}>
-          <h2>Features</h2>
+          <h2>Fonctionnalités</h2>
           <div className={styles.featureGrid}>
             <div className={styles.featureCard}>
               <Users className={styles.featureIcon} />
-              <h3>Team Collaboration</h3>
+              <h3>Collaboration</h3>
               <p>
-                Easily coordinate schedules and share calendars with your team
-                members.
+                Creez facilement votre calendrier d'équipe et partagez-les avec
+                vos collaborateurs.
               </p>
             </div>
             <div className={styles.featureCard}>
               <Building2 className={styles.featureIcon} />
-              <h3>Resource Management</h3>
+              <h3>Événements publics</h3>
               <p>
-                Efficiently manage meeting rooms, equipment, and other
-                resources.
+                Partagez facilement vos événements et permettez aux utilisateurs
+                de s'y inscrire.
               </p>
             </div>
             <div className={styles.featureCard}>
               <Stethoscope className={styles.featureIcon} />
-              <h3>Appointment Booking</h3>
+              <h3>Prise de rendez-vous</h3>
               <p>
-                Streamline patient appointments and reduce scheduling conflicts.
-              </p>
-            </div>
-            <div className={styles.featureCard}>
-              <HardHat className={styles.featureIcon} />
-              <h3>Project Timeline</h3>
-              <p>
-                Visualize project timelines and track progress effortlessly.
+                Une prise de rendez-vous facile et rapide pour vos patients avec
+                une indication des disponibilités.
               </p>
             </div>
           </div>
-        </section>
-
-        <section id="testimonials" className={styles.testimonials}>
-          <h2>What Our Users Say</h2>
-          <div className={styles.testimonialGrid}>
-            <div className={styles.testimonialCard}>
-              <p>
-                "EcoCalendar has revolutionized how we manage city council
-                meetings and public events."
-              </p>
-              <cite>- Sarah Johnson, City Clerk</cite>
-            </div>
-            <div className={styles.testimonialCard}>
-              <p>
-                "As a busy medical practice, EcoCalendar helps us optimize our
-                patient scheduling and reduce wait times."
-              </p>
-              <cite>- Dr. Michael Chen, Family Physician</cite>
-            </div>
-            <div className={styles.testimonialCard}>
-              <p>
-                "Coordinating multiple construction projects has never been
-                easier. EcoCalendar is a game-changer for us."
-              </p>
-              <cite>- Robert Torres, Project Manager</cite>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.cta}>
-          <h2>Ready to Optimize Your Schedule?</h2>
-          <p>
-            Join thousands of professionals who trust EcoCalendar for their
-            scheduling needs.
-          </p>
-          <button className={styles.ctaButton}>
-            Start Your Free Trial <ArrowRight size={20} />
-          </button>
         </section>
       </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <div className={styles.footerLogo}>
-            <Calendar className={styles.logoIcon} />
-            <span>EcoCalendar</span>
-          </div>
-          <p>&copy; 2023 EcoCalendar. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

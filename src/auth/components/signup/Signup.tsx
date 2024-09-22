@@ -5,6 +5,7 @@ import styles from "./Signup.module.scss";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signupUser } from "@actions/user";
+import Link from "next/link";
 
 interface SignupFormValues {
   email: string;
@@ -49,22 +50,21 @@ export default function SignupComponent() {
           </p>
         </div>
         <div className={styles.cardContent}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={styles.nameGroup}>
-              <div className={styles.inputGroup}>
-                <label htmlFor="firstName" className={styles.label}>
-                  Name
-                </label>
-                <div className={styles.inputWrapper}>
-                  <User className={styles.inputIcon} />
-                  <input
-                    {...register("name", { required: "Name is required" })}
-                    placeholder="Name"
-                  />
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            <div className="m-input">
+              <label htmlFor="firstName">Name</label>
+              <div className="m-input__core">
+                <div className="m-input__core__prefix">
+                  <User />
                 </div>
-                {errors.name && <span>{errors.name.message}</span>}
+                <input
+                  {...register("name", { required: "Name is required" })}
+                  placeholder="John Doe"
+                />
               </div>
-              {/* <div className={styles.inputGroup}>
+              {errors.name && <span>{errors.name.message}</span>}
+            </div>
+            {/* <div className={styles.inputGroup}>
                 <label htmlFor="lastName" className={styles.label}>
                   Last Name
                 </label>
@@ -81,13 +81,12 @@ export default function SignupComponent() {
                   />
                 </div>
               </div> */}
-            </div>
-            <div className={styles.inputGroup}>
-              <label htmlFor="email" className={styles.label}>
-                Email
-              </label>
-              <div className={styles.inputWrapper}>
-                <Mail className={styles.inputIcon} />
+            <div className="m-input">
+              <label htmlFor="email">Email</label>
+              <div className="m-input__core">
+                <div className="m-input__core__prefix">
+                  <Mail />
+                </div>
                 <input
                   {...register("email", {
                     required: "Email is required",
@@ -101,12 +100,12 @@ export default function SignupComponent() {
               </div>
               {errors.email && <span>{errors.email.message}</span>}
             </div>
-            <div className={styles.inputGroup}>
-              <label htmlFor="password" className={styles.label}>
-                Password
-              </label>
-              <div className={styles.inputWrapper}>
-                <Lock className={styles.inputIcon} />
+            <div className="m-input">
+              <label htmlFor="password">Password</label>
+              <div className="m-input__core">
+                <div className="m-input__core__prefix">
+                  <Lock />
+                </div>
                 <input
                   type="password"
                   {...register("password", {
@@ -145,9 +144,9 @@ export default function SignupComponent() {
         <div className={styles.cardFooter}>
           <p className={styles.loginText}>
             Already have an account?{" "}
-            <a href="#" className={styles.loginLink}>
+            <Link href="/connexion" className={styles.loginLink}>
               Log in
-            </a>
+            </Link>
           </p>
         </div>
       </div>

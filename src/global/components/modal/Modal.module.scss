@@ -1,0 +1,180 @@
+.main {
+   background-color: rgba(0, 0, 0, 0.5);
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   z-index: 999999;
+   display: flex;
+   align-items: flex-end;
+   justify-content: center;
+   padding: 30px 0 0;
+   overflow-y: auto;
+
+   @media (min-width: 768px) {
+      align-items: center;
+      padding: 30px;
+   }
+
+   @media (min-width: 1024px) {
+      align-items: center;
+      padding: 40px;
+   }
+}
+
+.box {
+   background-color: #fff;
+   border-radius: 32px 32px 0px 0px;
+   width: 100%;
+   position: relative;
+   overflow: auto;
+   max-height: 90vh;
+   overflow: auto;
+   padding: 32px;
+
+   @media (min-width: 768px) {
+      border-radius: 10px;
+
+      max-width: 520px;
+
+      max-height: 90vh;
+   }
+
+   &.classcolorPanelName {
+      max-width: 534px;
+   }
+
+   &.classImageUpload {
+      max-width: 1200px;
+      width: auto;
+   }
+
+   &.calendar {
+      max-width: 696px;
+      border-radius: 10px;
+      padding: 0;
+
+      .boxHeader {
+         right: 0px;
+         top: 0px;
+         justify-content: flex-end;
+         height: 32px;
+
+         @media screen and (min-width: 768px) {
+            right: 8px;
+            top: 8px;
+            justify-content: flex-end;
+            height: fit-content;
+         }
+
+         .close {
+            width: 22px;
+            height: 22px;
+
+            svg {
+               width: 12px;
+               height: 12px;
+            }
+         }
+      }
+   }
+
+   &.single {
+      width: fit-content;
+      border-radius: 10px;
+      padding: 0;
+
+      .boxHeader {
+         right: 0px;
+         top: 0px;
+         justify-content: flex-end;
+         height: 32px;
+
+         @media screen and (min-width: 768px) {
+            right: 8px;
+            top: 8px;
+            justify-content: flex-end;
+            height: fit-content;
+         }
+
+         .close {
+            width: 22px;
+            height: 22px;
+
+            svg {
+               width: 12px;
+               height: 12px;
+            }
+         }
+      }
+   }
+}
+
+.boxHeader {
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   height: 44px;
+   border-bottom: 1px solid var(--Neutral-Gray-200);
+
+   @media screen and (min-width: 768px) {
+      justify-content: space-between;
+   }
+
+   .title {
+      color: var(--Neutral-Black-Black);
+      font-size: 20px;
+      font-weight: 700;
+   }
+
+   .close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      width: 44px;
+      height: 44px;
+      border-radius: 32px;
+      justify-content: center;
+      align-items: center;
+      background: var(--Neutral-Slate-200);
+
+      @media screen and (min-width: 768px) {
+         top: initial;
+         right: initial;
+         position: relative;
+      }
+
+      &::after {
+         content: '';
+         display: block;
+         width: 100%;
+         height: 100%;
+         position: absolute;
+         top: 0;
+         left: 0;
+         border-radius: 100px;
+         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+         z-index: 0;
+         background-color: inherit;
+      }
+
+      &:hover {
+         &::after {
+            @media screen and (min-width: 768px) {
+               transform: scale(1.1);
+            }
+         }
+      }
+
+      svg {
+         width: 20px;
+         height: 20px;
+         flex-shrink: 0;
+         z-index: 1;
+         color: var(--Neutral-Black-Black);
+      }
+   }
+}

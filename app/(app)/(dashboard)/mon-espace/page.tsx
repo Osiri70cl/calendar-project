@@ -1,9 +1,12 @@
 import CalendarComponent from "@/calendar/components/calendar-component/CalendarComponent";
+import { fetchEventsByUserId } from "@actions/events";
 
-export default function MonEspace() {
+export default async function MonEspace() {
+  const events = await fetchEventsByUserId(1);
+
   return (
     <div>
-      <CalendarComponent />
+      <CalendarComponent eventData={events} />
     </div>
   );
 }

@@ -24,22 +24,41 @@ model Post {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)       
-  email     String   @unique @db.VarChar(255)      
-  password  String   @db.VarChar(255)       
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
-  events    Event[]
+  id                Int      @id @default(autoincrement())
+  name              String   @db.VarChar(255)       
+  email             String   @unique @db.VarChar(255)      
+  password          String   @db.VarChar(255)       
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  posts             Post[]
+  createdEvents     Event[]  @relation("EventCreator")
+  participatingEvents EventParticipant[]
 }
 
 model Event {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)       
+  description     String   @db.Text
+  date        DateTime @db.Date
+  startTime   String   @db.VarChar(255)
+  endTime     String   @db.VarChar(255)
+  type        String   @db.VarChar(255)
+  location    String   @db.VarChar(255)
+  link        String   @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  creatorId   Int
+  creator     User     @relation("EventCreator", fields: [creatorId], references: [id])
+  participants EventParticipant[]
+}
+
+model EventParticipant {
   id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)       
-  content   String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   userId    Int
+  eventId   Int
   user      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, eventId])
 }

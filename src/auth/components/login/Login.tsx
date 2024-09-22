@@ -5,6 +5,7 @@ import { CalendarDays, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface FormValues {
   email: string;
@@ -22,12 +23,9 @@ const Login = () => {
   const router = useRouter();
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data, "tetet");
     const result = await loginUser(data);
-    console.log(result);
     if (result.user) {
-      console.log(result.user);
-      router.push("/tests");
+      router.push("/mon-espace");
     } else if (result.errors) {
       Object.keys(result.errors).forEach((key) => {
         setError(key as keyof FormValues, {
@@ -51,26 +49,26 @@ const Login = () => {
           </p>
         </div>
         <div className={styles.cardContent}>
-          <form>
-            <div className={styles.inputGroup}>
-              <label htmlFor="email" className={styles.label}>
-                Email
-              </label>
-              <div className={styles.inputWrapper}>
-                <Mail className={styles.inputIcon} />
+          <form className={styles.form}>
+            <div className="m-input">
+              <label htmlFor="email">Email</label>
+              <div className="m-input__core">
+                <div className="m-input__core__prefix">
+                  <Mail />
+                </div>
                 <input
                   {...register("email", { required: "Email is required" })}
                   placeholder="Email"
                 />
-                {errors.email && <span>{errors.email.message}</span>}
               </div>
+              {errors.email && <span>{errors.email.message}</span>}
             </div>
-            <div className={styles.inputGroup}>
-              <label htmlFor="password" className={styles.label}>
-                Password
-              </label>
-              <div className={styles.inputWrapper}>
-                <Lock className={styles.inputIcon} />
+            <div className="m-input">
+              <label htmlFor="password">Password</label>
+              <div className="m-input__core">
+                <div className="m-input__core__prefix">
+                  <Lock />
+                </div>
                 <input
                   type="password"
                   {...register("password", {
@@ -78,24 +76,24 @@ const Login = () => {
                   })}
                   placeholder="Password"
                 />
-                {errors.password && <span>{errors.password.message}</span>}
               </div>
+              {errors.password && <span>{errors.password.message}</span>}
             </div>
-            <button
-              type="button"
-              className={styles.button}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Log in
-            </button>
           </form>
+          <button
+            type="button"
+            className={styles.button}
+            onClick={handleSubmit(onSubmit)}
+          >
+            Log in
+          </button>
         </div>
         <div className={styles.cardFooter}>
           <p className={styles.signupText}>
             Don't have an account?{" "}
-            <a href="#" className={styles.signupLink}>
+            <Link href="/inscription" className={styles.signupLink}>
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

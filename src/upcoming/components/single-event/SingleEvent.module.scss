@@ -1,0 +1,51 @@
+.singleCard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 12px;
+
+  .singleTitle {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .singleDate {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--Neutral-Slate-600);
+    text-align: center;
+    svg {
+      font-weight: bold;
+    }
+  }
+  .singleTime {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--Neutral-Slate-500);
+    text-align: center;
+    svg {
+      font-weight: bold;
+    }
+  }
+
+  .singleDescription,
+  .eventType,
+  .eventParticipants {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--Neutral-Slate-600);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    span {
+      font-weight: 700;
+    }
+  }
+}
