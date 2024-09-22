@@ -1,0 +1,13 @@
+$avatar-size: 40px;
+$border-color: #1a1a1a;
+$background-color: #333333;
+$text-color: #ffffff;
+
+.avatar {
+  width: $avatar-size;
+  height: $avatar-size;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid $border-color;
+}

@@ -3,6 +3,7 @@ import { Event } from "@/calendar/types/events";
 import { db } from "@db/index";
 import { notFound } from "next/navigation";
 import { getUserIdFromToken } from "./lib/auth";
+import dayjs from "dayjs";
 
 type CreateEventData = {
   title: string;
@@ -134,8 +135,14 @@ export async function createEvent(data: CreateEventData) {
         },
       },
     });
-    console.log(event);
-    return { event };
+    return {
+      event: {
+        ...event,
+        startTime: dayjs(event.startTime).format(),
+        endTime: dayjs(event.endTime).format(),
+        date: dayjs(event.date).format(),
+      },
+    };
   } catch (error: unknown) {
     console.error("Failed to create event:", error);
     return {

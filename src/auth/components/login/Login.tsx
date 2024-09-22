@@ -19,14 +19,17 @@ const Login = () => {
     setError,
     formState: { errors },
   } = useForm<FormValues>();
-
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     const result = await loginUser(data);
     if (result.user) {
       router.push("/mon-espace");
+      setLoading(false);
     } else if (result.errors) {
+      setLoading(false);
       Object.keys(result.errors).forEach((key) => {
         setError(key as keyof FormValues, {
           type: "manual",
@@ -84,8 +87,9 @@ const Login = () => {
             type="button"
             className={styles.button}
             onClick={handleSubmit(onSubmit)}
+            disabled={loading}
           >
-            Log in
+            {loading ? "Chargement..." : "Connexion"}
           </button>
         </div>
         <div className={styles.cardFooter}>

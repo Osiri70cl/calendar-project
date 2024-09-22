@@ -1,54 +1,103 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import { useModalStore } from "@/zustand/store";
 import styles from "./CalendarView.module.scss";
 import EventCreation from "../event/EventCreation";
+import { Event } from "@/calendar/types/events";
 
 dayjs.extend(weekOfYear);
 dayjs.locale("fr");
-
-type Event = {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-  color?: string;
-};
 
 type Props = {
   events: Event[];
 };
 
-const HOUR_HEIGHT = 60; // pixels per hour
+const HOUR_HEIGHT = 60;
 
-const CalendarView: React.FC<Props> = () => {
-  const events: Event[] = [
-    {
-      id: "1",
-      title: "Event 1",
-      start: new Date("2024-09-21T03:00:00"),
-      end: new Date("2024-09-21T13:09:00"),
-      color: "#1a73e8",
-    },
-    {
-      id: "2",
-      title: "Event 2",
-      start: new Date("2024-09-21T03:00:00"),
-      end: new Date("2024-09-21T05:00:00"),
-      color: "#80ed99",
-    },
-  ];
+const CalendarView = ({ events: initialEvents }: Props) => {
+  // const events: Event[] = [
+  //   {
+  //     id: "1",
+  //     title: "Event 1",
+  //     start: new Date("2024-09-21T03:00:00"),
+  //     end: new Date("2024-09-21T13:09:00"),
+  //     color: "#1a73e8",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Event 2",
+  //     start: new Date("2024-09-21T03:00:00"),
+  //     end: new Date("2024-09-21T05:00:00"),
+  //     color: "#80ed99",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "Event 3",
+  //     start: new Date("2024-09-21T00:00:00"),
+  //     end: new Date("2024-09-21T02:00:00"),
+  //     color: "#80ed95",
+  //   },
+  //   {
+  //     id: "4",
+  //     title: "Event 4",
+  //     start: new Date("2024-09-21T03:00:00"),
+  //     end: new Date("2024-09-21T04:00:00"),
+  //     color: "#80ed99",
+  //   },
+  //   {
+  //     id: "5",
+  //     title: "Event 5",
+  //     start: new Date("2024-09-21T08:00:00"),
+  //     end: new Date("2024-09-21T10:00:00"),
+  //     color: "#80ed99",
+  //   },
+  //   {
+  //     id: "6",
+  //     title: "Event 6",
+  //     start: new Date("2024-09-21T13:00:00"),
+  //     end: new Date("2024-09-21T15:00:00"),
+  //     color: "#80ed99",
+  //   },
+  //   {
+  //     id: "7",
+  //     title: "Event 7",
+  //     start: new Date("2024-09-21T13:00:00"),
+  //     end: new Date("2024-09-21T18:00:00"),
+  //     color: "#80ed99",
+  //   },
+  //   {
+  //     id: "8",
+  //     title: "Event 8",
+  //     start: new Date("2024-09-21T19:00:00"),
+  //     end: new Date("2024-09-21T20:00:00"),
+  //     color: "#80ed99",
+  //   },
+  //   {
+  //     id: "9",
+  //     title: "Event 9",
+  //     start: new Date("2024-09-21T19:00:00"),
+  //     end: new Date("2024-09-21T22:00:00"),
+  //     color: "#80ed99",
+  //   },
+  // ];
   const { setHandleStatusModal } = useModalStore();
+  const [events, setEvents] = useState<Event[]>(initialEvents);
   const [currentWeek, setCurrentWeek] = React.useState(dayjs());
+
+  const handleCreatedEvent = (event: Event) => {
+    setEvents((prevEvents) => [...prevEvents, event]);
+  };
+
+  console.log(events);
 
   const openModal = () => {
     console.log("open modal");
     setHandleStatusModal({
       status: true,
-      children: <EventCreation />,
+      children: <EventCreation handleCreatedEvent={handleCreatedEvent} />,
       title: "Créer un événement",
     });
   };
@@ -70,19 +119,22 @@ const CalendarView: React.FC<Props> = () => {
     "D MMMM YYYY"
   )}`;
 
-  const getOverlappingEvents = (event: Event, dayEvents: Event[]) => {
-    return dayEvents.filter(
-      (e) =>
-        (dayjs(e.start).isBefore(dayjs(event.end)) &&
-          dayjs(e.end).isAfter(dayjs(event.start))) ||
-        (dayjs(e.start).isSame(dayjs(event.start)) &&
-          dayjs(e.end).isSame(dayjs(event.end)))
-    );
-  };
-
   const getEventStyle = (event: Event, dayEvents: Event[]) => {
-    const startTime = dayjs(event.start);
-    const endTime = dayjs(event.end);
+    const parseDateTime = (date: string, time: string) => {
+      const combinedDateTime = `${date.split("T")[0]}T${
+        time.split("T")[1] || time
+      }`;
+      return dayjs(combinedDateTime).isValid() ? dayjs(combinedDateTime) : null;
+    };
+
+    const startTime = parseDateTime(event.date, event.startTime);
+    const endTime = parseDateTime(event.date, event.endTime);
+
+    if (!startTime || !endTime) {
+      console.error("Invalid date or time for event:", event);
+      return null;
+    }
+
     const dayStart = startTime.startOf("day");
 
     const startMinutes = startTime.diff(dayStart, "minute");
@@ -91,53 +143,76 @@ const CalendarView: React.FC<Props> = () => {
     const top = (startMinutes / 60) * HOUR_HEIGHT;
     const height = (durationMinutes / 60) * HOUR_HEIGHT;
 
-    const overlappingEvents = getOverlappingEvents(event, dayEvents);
+    const overlappingEvents = dayEvents.filter((e) => {
+      const eStart = parseDateTime(e.date, e.startTime);
+      const eEnd = parseDateTime(e.date, e.endTime);
+      return (
+        eStart &&
+        eEnd &&
+        ((eStart.isBefore(endTime) && eEnd.isAfter(startTime)) ||
+          (eStart.isSame(startTime) && eEnd.isSame(endTime)))
+      );
+    });
+
     const index = overlappingEvents.indexOf(event);
     const totalOverlaps = overlappingEvents.length;
+    const baseWidth = 90;
+    const widthReduction = 10;
+    const minWidth = 50;
 
-    const baseWidth = 95; // Base width percentage
-    const widthReduction = 10; // Width reduction per overlap
-    const leftOffset = 5; // Left offset percentage per overlap
+    let width = Math.max(baseWidth - index * widthReduction, minWidth);
+    let left = index * 5;
 
-    const width = Math.max(baseWidth - index * widthReduction, 50); // Minimum width of 50%
-    const left = index * leftOffset;
+    if (left + width > 100) {
+      width = 100 - left;
+    }
+
+    const zIndex = 100 + index;
 
     return {
       top: `${top}px`,
       height: `${height}px`,
       width: `${width}%`,
-      left: `${left}%`,
-      backgroundColor: event.color || "#1a73e8",
-      zIndex: totalOverlaps - index,
+      left: `0`,
+      backgroundColor: event.type ? `#${event.type}` : "#1a73e8",
+      zIndex: zIndex,
     };
   };
 
-  console.log(events);
-
-  const renderWeeksAndEvents = useMemo(() => {
-    return weekDays.map((day) => {
-      const dayEvents = events.filter((event) =>
-        dayjs(event.start).isSame(day, "day")
-      );
-      console.log(dayEvents);
-      return (
-        <div key={day.format("YYYY-MM-DD")} className={styles.dayColumn}>
-          {dayEvents.map((event) => (
-            <div
-              key={event.id}
-              className={styles.event}
-              style={getEventStyle(event, dayEvents)}
-              title={`${event.title}\n${dayjs(event.start).format(
-                "HH:mm"
-              )} - ${dayjs(event.end).format("HH:mm")}`}
-            >
-              {event.title}
+  const renderBody = useMemo(() => {
+    return (
+      <div className={styles.body}>
+        <div className={styles.hourColumn}>
+          {hours.map((hour) => (
+            <div key={hour} className={styles.hourCell}>
+              {hour.toString().padStart(2, "0")}:00
             </div>
           ))}
         </div>
-      );
-    });
-  }, [events, weekDays]);
+        {weekDays.map((day) => {
+          const dayEvents = events.filter((event) =>
+            dayjs(event.date).isSame(day, "day")
+          );
+          return (
+            <div key={day.format("YYYY-MM-DD")} className={styles.dayColumn}>
+              {dayEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className={styles.event}
+                  style={getEventStyle(event, dayEvents)}
+                  title={`${event.title}\n${dayjs(event.startTime).format(
+                    "HH:mm"
+                  )} - ${dayjs(event.endTime).format("HH:mm")}`}
+                >
+                  {event.title}
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }, [events, weekDays, hours, getEventStyle, navigateWeek]);
 
   return (
     <div className={styles.main}>
@@ -166,16 +241,7 @@ const CalendarView: React.FC<Props> = () => {
             </div>
           ))}
         </div>
-        <div className={styles.body}>
-          <div className={styles.hourColumn}>
-            {hours.map((hour) => (
-              <div key={hour} className={styles.hourCell}>
-                {hour.toString().padStart(2, "0")}:00
-              </div>
-            ))}
-          </div>
-          {renderWeeksAndEvents}
-        </div>
+        {renderBody}
       </div>
       <button
         type="button"

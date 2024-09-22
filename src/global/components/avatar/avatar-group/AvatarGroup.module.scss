@@ -1,0 +1,36 @@
+$avatar-size: 40px;
+$border-color: #1a1a1a;
+$background-color: #333333;
+$text-color: #ffffff;
+
+.avatarGroup {
+  display: flex;
+  align-items: center;
+}
+
+.avatarWrapper {
+  margin-right: -12px;
+  position: relative;
+  z-index: 1;
+
+  &:hover {
+    z-index: 2;
+  }
+}
+
+.remainingAvatars {
+  width: $avatar-size;
+  height: $avatar-size;
+  border-radius: 50%;
+  background-color: $background-color;
+  color: $text-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid $border-color;
+  margin-right: -12px;
+  position: relative;
+  z-index: 1;
+}

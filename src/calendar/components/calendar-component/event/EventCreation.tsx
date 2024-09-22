@@ -4,8 +4,14 @@ import styles from "./EventForm.module.scss";
 import { createEvent } from "@actions/events";
 import { describe } from "node:test";
 import dayjs from "dayjs";
+import { useModalStore } from "@/zustand/store";
 
-const EventCreation = () => {
+type Props = {
+  handleCreatedEvent: Function;
+};
+
+const EventCreation = ({ handleCreatedEvent }: Props) => {
+  const { setHandleStatusModal } = useModalStore();
   const {
     register,
     handleSubmit,
@@ -16,8 +22,8 @@ const EventCreation = () => {
     const dataToSend = {
       title: data.title,
       description: data.description,
-      startTime: "2023-09-01T10:00:00.000Z",
-      endTime: "2023-09-01T11:00:00.000Z",
+      startTime: data.startTime,
+      endTime: data.endTime,
       date: dayjs(data.date).format(),
       type: data.type,
       location: data.location ? data.location : "",
@@ -25,7 +31,8 @@ const EventCreation = () => {
     };
 
     const result = await createEvent(dataToSend);
-    console.log(result);
+    handleCreatedEvent(result.event);
+    setHandleStatusModal({ status: false });
   };
 
   return (
@@ -60,13 +67,21 @@ const EventCreation = () => {
         <div className="m-input">
           <label htmlFor="startTime">Heure de début</label>
           <div className="m-input__core">
-            <input id="startTime" type="time" {...register("startTime")} />
+            <input
+              id="startTime"
+              type="datetime-local"
+              {...register("startTime")}
+            />
           </div>
         </div>
         <div className="m-input">
           <label htmlFor="endTime">Heure de fin</label>
           <div className="m-input__core">
-            <input id="endTime" type="time" {...register("endTime")} />
+            <input
+              id="endTime"
+              type="datetime-local"
+              {...register("endTime")}
+            />
           </div>
         </div>
         <div className="m-input">

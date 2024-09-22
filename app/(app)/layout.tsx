@@ -1,5 +1,6 @@
 import Menu from "@/global/components/menu/Menu";
 import Modal from "@/global/components/modal/Modal.component";
+import { getUserIdFromToken } from "@actions/lib/auth";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 
@@ -15,7 +16,9 @@ export default async function AppRootLayout({
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
-  if (!token) {
+  const cantGetUser = await getUserIdFromToken();
+
+  if (!token || !cantGetUser) {
     redirect("/connexion");
   }
   return (

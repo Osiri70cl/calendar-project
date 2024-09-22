@@ -104,7 +104,7 @@
   transition: all 0.3s ease;
 
   &:hover {
-    z-index: 10 !important;
+    z-index: 1000 !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 }

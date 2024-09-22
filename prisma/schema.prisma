@@ -39,7 +39,7 @@ model Event {
   id          Int      @id @default(autoincrement())
   title       String   @db.VarChar(255)       
   description     String   @db.Text
-  date        DateTime @db.Date
+  date        String @db.VarChar(255)
   startTime   String   @db.VarChar(255)
   endTime     String   @db.VarChar(255)
   type        String   @db.VarChar(255)
