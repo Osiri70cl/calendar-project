@@ -3,6 +3,7 @@ import { Event } from "@/calendar/types/events";
 import { db } from "@db/index";
 import { notFound } from "next/navigation";
 import { getUserIdFromToken } from "./lib/auth";
+import jwt from "jsonwebtoken";
 import dayjs from "dayjs";
 
 type CreateEventData = {
@@ -140,7 +141,8 @@ export async function createEvent(data: CreateEventData) {
         ...event,
         startTime: dayjs(event.startTime).format(),
         endTime: dayjs(event.endTime).format(),
-        date: dayjs(event.date).format(),
+        startDate: dayjs(event.startDate).format(),
+        endDate: dayjs(event.endDate).format(),
       },
     };
   } catch (error: unknown) {
@@ -150,6 +152,75 @@ export async function createEvent(data: CreateEventData) {
         _form: ["An unexpected error occurred. Please try again."],
       },
     };
+  }
+}
+
+export async function createLinkShare() {
+  const userId = await getUserIdFromToken();
+  try {
+    const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
+      expiresIn: "1000d",
+    });
+
+    const user = await db.user.update({
+      where: { id: userId },
+      data: {
+        shareToken: token,
+      },
+    });
+
+    const shareableLink = `${process.env.NEXT_PUBLIC_BASE_URL}calendrier-partage/${token}`;
+
+    return { shareableLink, token };
+  } catch (error) {
+    return {
+      errors: {
+        _form: ["An unexpected error occurred. Please try again."],
+      },
+    };
+  }
+}
+
+export async function getSharedEvents(token: string) {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+      userId: number;
+    };
+
+    const user = await db.user.findUnique({
+      where: { shareToken: token },
+      include: {
+        createdEvents: {
+          where: {
+            visibility: {
+              in: ["public", "busy"],
+            },
+          },
+          include: {
+            participants: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new Error("Invalid or expired share token");
+    }
+
+    return user.createdEvents;
+  } catch (error) {
+    console.error("Error retrieving shared events:", error);
+    throw new Error("Failed to retrieve shared events");
   }
 }
 

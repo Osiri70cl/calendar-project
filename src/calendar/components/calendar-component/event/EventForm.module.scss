@@ -7,6 +7,12 @@
   gap: 24px;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .inputGroup {
   margin-bottom: 1.5rem;
   flex: 1;
@@ -79,4 +85,25 @@
     border: 1px solid var(--Neutral-Slate-500);
     box-shadow: 0 0 0 2px rgba(var(--Neutral-Slate-500), 0.2);
   }
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--Neutral-White-White);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.explaination {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--Neutral-Slate-600);
 }

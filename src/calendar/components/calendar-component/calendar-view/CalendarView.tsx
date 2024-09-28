@@ -2,87 +2,40 @@
 import React, { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import { useModalStore } from "@/zustand/store";
 import styles from "./CalendarView.module.scss";
 import EventCreation from "../event/EventCreation";
 import { Event } from "@/calendar/types/events";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Network,
+  Plus,
+  PlusCircle,
+  Share2Icon,
+} from "lucide-react";
+import CalendarShare from "../../calendar-share/CalendarShare";
 
 dayjs.extend(weekOfYear);
 dayjs.locale("fr");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 type Props = {
   events: Event[];
+  publicCalendar?: boolean;
 };
 
 const HOUR_HEIGHT = 60;
 
-const CalendarView = ({ events: initialEvents }: Props) => {
-  // const events: Event[] = [
-  //   {
-  //     id: "1",
-  //     title: "Event 1",
-  //     start: new Date("2024-09-21T03:00:00"),
-  //     end: new Date("2024-09-21T13:09:00"),
-  //     color: "#1a73e8",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Event 2",
-  //     start: new Date("2024-09-21T03:00:00"),
-  //     end: new Date("2024-09-21T05:00:00"),
-  //     color: "#80ed99",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Event 3",
-  //     start: new Date("2024-09-21T00:00:00"),
-  //     end: new Date("2024-09-21T02:00:00"),
-  //     color: "#80ed95",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Event 4",
-  //     start: new Date("2024-09-21T03:00:00"),
-  //     end: new Date("2024-09-21T04:00:00"),
-  //     color: "#80ed99",
-  //   },
-  //   {
-  //     id: "5",
-  //     title: "Event 5",
-  //     start: new Date("2024-09-21T08:00:00"),
-  //     end: new Date("2024-09-21T10:00:00"),
-  //     color: "#80ed99",
-  //   },
-  //   {
-  //     id: "6",
-  //     title: "Event 6",
-  //     start: new Date("2024-09-21T13:00:00"),
-  //     end: new Date("2024-09-21T15:00:00"),
-  //     color: "#80ed99",
-  //   },
-  //   {
-  //     id: "7",
-  //     title: "Event 7",
-  //     start: new Date("2024-09-21T13:00:00"),
-  //     end: new Date("2024-09-21T18:00:00"),
-  //     color: "#80ed99",
-  //   },
-  //   {
-  //     id: "8",
-  //     title: "Event 8",
-  //     start: new Date("2024-09-21T19:00:00"),
-  //     end: new Date("2024-09-21T20:00:00"),
-  //     color: "#80ed99",
-  //   },
-  //   {
-  //     id: "9",
-  //     title: "Event 9",
-  //     start: new Date("2024-09-21T19:00:00"),
-  //     end: new Date("2024-09-21T22:00:00"),
-  //     color: "#80ed99",
-  //   },
-  // ];
+const CalendarView = ({ events: initialEvents, publicCalendar }: Props) => {
   const { setHandleStatusModal } = useModalStore();
   const [events, setEvents] = useState<Event[]>(initialEvents);
   const [currentWeek, setCurrentWeek] = React.useState(dayjs());
@@ -91,8 +44,6 @@ const CalendarView = ({ events: initialEvents }: Props) => {
     setEvents((prevEvents) => [...prevEvents, event]);
   };
 
-  console.log(events);
-
   const openModal = () => {
     console.log("open modal");
     setHandleStatusModal({
@@ -100,6 +51,27 @@ const CalendarView = ({ events: initialEvents }: Props) => {
       children: <EventCreation handleCreatedEvent={handleCreatedEvent} />,
       title: "Créer un événement",
     });
+  };
+  const openCalendarShare = () => {
+    setHandleStatusModal({
+      status: true,
+      children: <CalendarShare />,
+      title: "Partager mon calendrier",
+    });
+  };
+
+  const handleDayClick = (day: dayjs.Dayjs) => {
+    if (publicCalendar) {
+      console.log("public calendar");
+    } else {
+      setHandleStatusModal({
+        status: true,
+        children: (
+          <EventCreation handleCreatedEvent={handleCreatedEvent} day={day} />
+        ),
+        title: "Créer un événement",
+      });
+    }
   };
 
   const weekDays = React.useMemo(() => {
@@ -119,44 +91,38 @@ const CalendarView = ({ events: initialEvents }: Props) => {
     "D MMMM YYYY"
   )}`;
 
-  const getEventStyle = (event: Event, dayEvents: Event[]) => {
-    const parseDateTime = (date: string, time: string) => {
-      const combinedDateTime = `${date.split("T")[0]}T${
-        time.split("T")[1] || time
-      }`;
-      return dayjs(combinedDateTime).isValid() ? dayjs(combinedDateTime) : null;
-    };
+  const getEventStyle = (
+    event: Event,
+    day: dayjs.Dayjs,
+    dayEvents: Event[]
+  ) => {
+    const eventStart = dayjs(event.startTime);
+    const eventEnd = dayjs(event.endTime);
+    const dayStart = day.startOf("day");
+    const dayEnd = day.endOf("day");
 
-    const startTime = parseDateTime(event.date, event.startTime);
-    const endTime = parseDateTime(event.date, event.endTime);
+    let start = eventStart.isBefore(dayStart) ? dayStart : eventStart;
+    let end = eventEnd.isAfter(dayEnd) ? dayEnd : eventEnd;
 
-    if (!startTime || !endTime) {
-      console.error("Invalid date or time for event:", event);
-      return null;
-    }
-
-    const dayStart = startTime.startOf("day");
-
-    const startMinutes = startTime.diff(dayStart, "minute");
-    const durationMinutes = endTime.diff(startTime, "minute");
+    const startMinutes = start.diff(dayStart, "minute");
+    const durationMinutes = end.diff(start, "minute");
 
     const top = (startMinutes / 60) * HOUR_HEIGHT;
     const height = (durationMinutes / 60) * HOUR_HEIGHT;
 
     const overlappingEvents = dayEvents.filter((e) => {
-      const eStart = parseDateTime(e.date, e.startTime);
-      const eEnd = parseDateTime(e.date, e.endTime);
+      const eStart = dayjs(e.startTime);
+      const eEnd = dayjs(e.endTime);
       return (
-        eStart &&
-        eEnd &&
-        ((eStart.isBefore(endTime) && eEnd.isAfter(startTime)) ||
-          (eStart.isSame(startTime) && eEnd.isSame(endTime)))
+        (eStart.isBefore(end) && eEnd.isAfter(start)) ||
+        (eStart.isSame(start) && eEnd.isSame(end))
       );
     });
 
     const index = overlappingEvents.indexOf(event);
     const totalOverlaps = overlappingEvents.length;
-    const baseWidth = 90;
+
+    const baseWidth = 100;
     const widthReduction = 10;
     const minWidth = 50;
 
@@ -167,16 +133,61 @@ const CalendarView = ({ events: initialEvents }: Props) => {
       width = 100 - left;
     }
 
-    const zIndex = 100 + index;
+    const zIndex = 1000 + index;
 
     return {
       top: `${top}px`,
       height: `${height}px`,
       width: `${width}%`,
       left: `0`,
-      backgroundColor: event.type ? `#${event.type}` : "#1a73e8",
+      backgroundColor: event.type ? `#${event.type}` : "#fff",
       zIndex: zIndex,
     };
+  };
+
+  const renderEvents = (day: dayjs.Dayjs) => {
+    const dayEvents = events.filter((event) => {
+      const eventStart = dayjs(event.startTime);
+      const eventEnd = dayjs(event.endTime);
+      return (
+        (eventStart.isSameOrBefore(day, "day") &&
+          eventEnd.isSameOrAfter(day, "day")) ||
+        eventStart.isSame(day, "day") ||
+        eventEnd.isSame(day, "day")
+      );
+    });
+
+    return dayEvents.map((event) => {
+      const style = getEventStyle(event, day, dayEvents);
+      if (!style) return null;
+
+      const isMultiDay = !dayjs(event.startTime).isSame(
+        dayjs(event.endTime),
+        "day"
+      );
+      const isFirstDay = dayjs(event.startTime).isSame(day, "day");
+      const isLastDay = dayjs(event.endTime).isSame(day, "day");
+
+      let title = event.title;
+      if (isMultiDay) {
+        if (isFirstDay) title += " (Start)";
+        else if (isLastDay) title += " (End)";
+        else title += " (Cont.)";
+      }
+
+      return (
+        <div
+          key={`${event.id}-${day.format("YYYY-MM-DD")}`}
+          className={styles.event}
+          style={style}
+          title={`${event.title}\n${dayjs(event.startTime).format(
+            "DD/MM HH:mm"
+          )} - ${dayjs(event.endTime).format("DD/MM HH:mm")}`}
+        >
+          {title}
+        </div>
+      );
+    });
   };
 
   const renderBody = useMemo(() => {
@@ -189,27 +200,18 @@ const CalendarView = ({ events: initialEvents }: Props) => {
             </div>
           ))}
         </div>
-        {weekDays.map((day) => {
-          const dayEvents = events.filter((event) =>
-            dayjs(event.date).isSame(day, "day")
-          );
-          return (
-            <div key={day.format("YYYY-MM-DD")} className={styles.dayColumn}>
-              {dayEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className={styles.event}
-                  style={getEventStyle(event, dayEvents)}
-                  title={`${event.title}\n${dayjs(event.startTime).format(
-                    "HH:mm"
-                  )} - ${dayjs(event.endTime).format("HH:mm")}`}
-                >
-                  {event.title}
-                </div>
-              ))}
-            </div>
-          );
-        })}
+        {weekDays.map((day) => (
+          <div
+            key={day.format("YYYY-MM-DD")}
+            className={styles.dayColumn}
+            onClick={() => handleDayClick(day)}
+          >
+            {hours.map((hour) => (
+              <div key={hour} className={styles.hourLine}></div>
+            ))}
+            {renderEvents(day)}
+          </div>
+        ))}
       </div>
     );
   }, [events, weekDays, hours, getEventStyle, navigateWeek]);
@@ -219,16 +221,28 @@ const CalendarView = ({ events: initialEvents }: Props) => {
       <div className={styles.navigation}>
         <button
           onClick={() => navigateWeek("prev")}
-          className={styles.navButton}
+          className={"m-button m-button--round m-button--primary"}
         >
-          Semaine précédente
+          <ChevronLeft size={20} />
         </button>
-        <span className={styles.weekRange}>{weekRange}</span>
+        <div className={styles.weekRange}>
+          {weekRange}
+          {!publicCalendar && (
+            <button
+              type="button"
+              className="m-button m-button--primary"
+              onClick={openCalendarShare}
+            >
+              <Share2Icon size={20} />
+              Partager mon calendrier
+            </button>
+          )}
+        </div>
         <button
           onClick={() => navigateWeek("next")}
-          className={styles.navButton}
+          className={"m-button m-button--round m-button--primary"}
         >
-          Semaine suivante
+          <ChevronRight size={20} />
         </button>
       </div>
       <div className={styles.calendar}>
@@ -243,13 +257,15 @@ const CalendarView = ({ events: initialEvents }: Props) => {
         </div>
         {renderBody}
       </div>
-      <button
-        type="button"
-        className={styles.createEventButton}
-        onClick={openModal}
-      >
-        Créer un événement
-      </button>
+      {!publicCalendar && (
+        <button
+          type="button"
+          className={styles.createEventButton}
+          onClick={openModal}
+        >
+          <PlusCircle size={20} />
+        </button>
+      )}
     </div>
   );
 };

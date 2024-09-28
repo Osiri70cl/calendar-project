@@ -30,6 +30,7 @@ model User {
   password          String   @db.VarChar(255)       
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  shareToken String?  @unique @db.VarChar(255)
   posts             Post[]
   createdEvents     Event[]  @relation("EventCreator")
   participatingEvents EventParticipant[]
@@ -39,11 +40,13 @@ model Event {
   id          Int      @id @default(autoincrement())
   title       String   @db.VarChar(255)       
   description     String   @db.Text
-  date        String @db.VarChar(255)
+  startDate        String @db.VarChar(255)
+  endDate     String   @db.VarChar(255)
   startTime   String   @db.VarChar(255)
   endTime     String   @db.VarChar(255)
   type        String   @db.VarChar(255)
   location    String   @db.VarChar(255)
+  visibility  String   @db.VarChar(255)
   link        String   @db.VarChar(255)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

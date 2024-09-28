@@ -17,8 +17,9 @@ export default async function AppRootLayout({
   const token = cookieStore.get("token");
 
   const cantGetUser = await getUserIdFromToken();
+  console.log(cantGetUser);
 
-  if (!token || !cantGetUser) {
+  if (!cantGetUser) {
     redirect("/connexion");
   }
   return (

@@ -54,7 +54,7 @@ export async function loginUser(data: FormValues) {
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
+      { expiresIn: "1000d" }
     );
 
     cookies().set("token", token, {
@@ -110,7 +110,7 @@ export async function signupUser(data: SignupFormValues) {
     const token = jwt.sign(
       { userId: newUser.id },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
+      { expiresIn: "1000d" }
     );
 
     cookies().set("token", token, {

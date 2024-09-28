@@ -1,0 +1,42 @@
+.calendarShare {
+  width: 100%;
+  height: 100%;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.explanation {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--Neutral-Slate-600);
+  line-height: 20px;
+}
+
+.shareContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.appointment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--Neutral-Black-Black);
+  width: 80%;
+}
+
+.linkGenerate {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
