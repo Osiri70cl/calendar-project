@@ -13,7 +13,6 @@ export default async function CalendrierPartage({ params }: any) {
     };
   }
   const events = await getSharedEvents(token);
-  console.log(events);
 
   return (
     <div>
