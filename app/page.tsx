@@ -1,74 +1,95 @@
-import {
-  Calendar,
-  Users,
-  Building2,
-  Stethoscope,
-  HardHat,
-  ArrowRight,
-} from "lucide-react";
-import Link from "next/link";
-import styles from "./page.module.scss";
+import Image from "next/image";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.landingPage}>
-      <header className={styles.header}>
-        <nav className={styles.nav}>
-          <div className={styles.logo}>
-            <Calendar className={styles.logoIcon} />
-            <span>EcoCalendar</span>
-          </div>
-          <ul className={styles.navLinks}>
-            <li>
-              <Link href="/connexion" className={styles.navLink}>
-                Connexion
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <Image
+          className={styles.logo}
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        />
+        <ol>
+          <li>
+            Get started by editing <code>app/page.tsx</code>.
+          </li>
+          <li>Save and see your changes instantly.</li>
+        </ol>
 
-      <main>
-        <section className={styles.hero}>
-          <h1>Devenez maitre de votre temps</h1>
-          <p>
-            Un calendrier complet pour tous vos événements, de la réunion à la
-            prise de rendez-vous en passant par les annonces pour votre ville.
-          </p>
-          <Link href={"/inscription"} className={styles.ctaButton}>
-            Je m'inscris <ArrowRight size={20} />
-          </Link>
-        </section>
-        <section id="features" className={styles.features}>
-          <h2>Fonctionnalités</h2>
-          <div className={styles.featureGrid}>
-            <div className={styles.featureCard}>
-              <Users className={styles.featureIcon} />
-              <h3>Collaboration</h3>
-              <p>
-                Creez facilement votre calendrier d'équipe et partagez-les avec
-                vos collaborateurs.
-              </p>
-            </div>
-            <div className={styles.featureCard}>
-              <Building2 className={styles.featureIcon} />
-              <h3>Événements publics</h3>
-              <p>
-                Partagez facilement vos événements et permettez aux utilisateurs
-                de s'y inscrire.
-              </p>
-            </div>
-            <div className={styles.featureCard}>
-              <Stethoscope className={styles.featureIcon} />
-              <h3>Prise de rendez-vous</h3>
-              <p>
-                Une prise de rendez-vous facile et rapide pour vos patients avec
-                une indication des disponibilités.
-              </p>
-            </div>
-          </div>
-        </section>
+        <div className={styles.ctas}>
+          <a
+            className={styles.primary}
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className={styles.logo}
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={20}
+              height={20}
+            />
+            Deploy now
+          </a>
+          <a
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.secondary}
+          >
+            Read our docs
+          </a>
+        </div>
       </main>
+      <footer className={styles.footer}>
+        <a
+          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/file.svg"
+            alt="File icon"
+            width={16}
+            height={16}
+          />
+          Learn
+        </a>
+        <a
+          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/window.svg"
+            alt="Window icon"
+            width={16}
+            height={16}
+          />
+          Examples
+        </a>
+        <a
+          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/globe.svg"
+            alt="Globe icon"
+            width={16}
+            height={16}
+          />
+          Go to nextjs.org →
+        </a>
+      </footer>
     </div>
   );
 }
