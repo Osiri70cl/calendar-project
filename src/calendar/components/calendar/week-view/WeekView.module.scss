@@ -1,0 +1,249 @@
+.calendarGrid {
+  display: flex;
+  position: relative;
+  min-height: 100%;
+
+  .timeColumn {
+    min-width: 60px;
+    border-right: 1px solid #333;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+
+    .hourCell {
+      height: 60px;
+      position: relative;
+
+      .hourLabel {
+        position: absolute;
+        top: -10px;
+        right: 8px;
+        font-size: 0.8rem;
+        color: #777;
+      }
+    }
+  }
+
+  .dayGrid {
+    display: flex;
+    flex: 1;
+    position: relative;
+
+    .dayColumn {
+      flex: 1;
+      border-right: 1px solid #333;
+      cursor: pointer;
+
+      &:last-child {
+        border-right: none;
+      }
+
+      .timeCell {
+        height: 60px;
+        border-bottom: 1px solid #333;
+        position: relative;
+        transition: background-color 0.1s;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+      }
+    }
+
+    .currentTimeIndicator {
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 5;
+
+      .timeLabel {
+        position: absolute;
+        left: -40px;
+        top: -10px;
+        font-size: 0.8rem;
+        color: #ff5555;
+        font-weight: 700;
+      }
+
+      .timeLine {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #ff5555;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: -4px;
+          top: -4px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: #ff5555;
+        }
+      }
+    }
+  }
+}
+.weekView {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  color: #c4c4c4;
+  position: relative;
+  overflow: hidden;
+}
+
+.daysHeader {
+  display: flex;
+  border-bottom: 1px solid #333;
+  z-index: 10;
+  position: sticky;
+  top: 0;
+
+  .timeColumn {
+    min-width: 60px;
+    border-right: 1px solid #333;
+
+    .allDayLabel {
+      padding: 8px 4px;
+      color: #c4c4c4;
+      font-size: 0.8rem;
+    }
+  }
+
+  .dayColumn {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid #333;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    .dayName {
+      padding: 8px 0;
+      font-size: 0.9rem;
+    }
+  }
+
+  .currentDay {
+    .dayName {
+      color: #ff5555;
+      font-weight: 500;
+      border-radius: 50%;
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+    }
+  }
+}
+
+.calendarBody {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  height: calc(100vh - 50px);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.calendarGrid {
+  display: flex;
+  position: relative;
+  min-height: 100%;
+
+  .timeColumn {
+    min-width: 60px;
+    border-right: 1px solid #333;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+
+    .hourCell {
+      height: 60px;
+      position: relative;
+
+      .hourLabel {
+        position: absolute;
+        top: -10px;
+        right: 8px;
+        font-size: 0.8rem;
+        color: #777;
+      }
+    }
+  }
+
+  .dayGrid {
+    display: flex;
+    flex: 1;
+    position: relative;
+    padding-bottom: 53px;
+    @media screen and (min-width: 768px) {
+      padding-bottom: 0;
+    }
+
+    .dayColumn {
+      flex: 1;
+      border-right: 1px solid #333;
+
+      &:last-child {
+        border-right: none;
+      }
+
+      .timeCell {
+        height: 60px;
+        border-bottom: 1px solid #333;
+        position: relative;
+      }
+    }
+
+    .currentTimeIndicator {
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 5;
+
+      .timeLabel {
+        position: absolute;
+        left: -40px;
+        top: -10px;
+        font-size: 0.8rem;
+        color: #ff5555;
+        font-weight: 700;
+      }
+
+      .timeLine {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #ff5555;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: -4px;
+          top: -4px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: #ff5555;
+        }
+      }
+    }
+  }
+}
+
+.tempEvent {
+  pointer-events: none;
+  transition:
+    height 0.1s,
+    top 0.1s;
+}

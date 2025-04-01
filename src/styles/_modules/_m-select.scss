@@ -1,0 +1,55 @@
+.m-select {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  &__wrapper {
+    position: relative;
+    width: 100%;
+  }
+   
+  &__suffix {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    top: 50%;
+    transform: translateY(-50%);
+    align-items: center;
+    pointer-events: none;
+    svg {
+      width: 20px;
+      height: 20px;
+      color: #6B7280;
+    }
+  }
+   
+  &__core {
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    padding: 8px 36px 8px 12px;
+    height: 44px;
+    font-size: 16px;
+    color: #111827;
+    cursor: pointer;
+      
+    &:focus {
+      outline: none;
+      border-color: #2563EB;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    }
+  }
+}

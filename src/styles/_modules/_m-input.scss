@@ -1,0 +1,119 @@
+@use "../_bases/mixin" as mixins;
+
+.m-input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  gap: 8px;
+
+  label {
+    @include mixins.text-l;
+    font-weight: 500;
+    span {
+      color: red;
+    }
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    min-height: 40px;
+    background: var(--Neutral-White, #fff);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    color: var(--Neutral-Black);
+    padding: 8px;
+    border: 1px solid var(--Neutral-Grey-300, #d3d3d2);
+    @include mixins.text-m;
+
+    &:focus {
+      border-radius: 8px;
+      border-color: transparent;
+      background: var(--Neutral-White, #fff);
+      box-shadow:
+        0px 0px 0px 3px rgba(0, 0, 0, 0.15),
+        0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    }
+    &::placeholder {
+      color: var(--Neutral-Grey-200);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    &__error {
+      @include mixins.overline-xs;
+      border-color: var(--Semantic-Red);
+    }
+  }
+
+  textarea {
+    width: 100%;
+    height: 100%;
+    color: var(--Neutral-Grey-1000);
+    height: 107px;
+    background: var(--Neutral-White-1000, #fff);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    color: var(--Neutral-Grey-1000);
+    padding: 8px;
+    border: 1px solid var(--Neutral-Grey-300, #d3d3d2);
+    padding: 8px;
+    &::placeholder {
+      color: var(--Neutral-Grey-500);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    &:focus {
+      border-radius: 8px;
+      border-color: transparent;
+      background: var(--Neutral-White, #fff);
+      box-shadow:
+        0px 0px 0px 3px rgba(0, 0, 0, 0.15),
+        0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    }
+  }
+  &__error {
+    input,
+    textarea {
+      @include mixins.overline-xs;
+      border-color: var(--Semantic-Red);
+    }
+  }
+  &__select {
+    input {
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      color: var(--Neutral-Black);
+      font-size: 14px;
+
+      &::placeholder {
+        color: var(--Neutral-Grey-200);
+      }
+    }
+
+    &__suffix {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      right: 0px;
+      margin-right: 8px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        color: #8a8a89;
+      }
+    }
+  }
+
+  &__error-message {
+    @include mixins.overline-xs;
+    color: var(--Semantic-Red);
+    margin-top: 4px;
+    display: block;
+  }
+}
