@@ -13,7 +13,7 @@ async function makeApiRequest(
   file?: boolean,
   retries = 3
 ) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const tokenData = cookieStore.get("token");
   const apiKey = "test";
 
