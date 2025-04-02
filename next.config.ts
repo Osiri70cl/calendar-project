@@ -2,7 +2,6 @@ const path = require("path");
 
 const nextConfig = {
   reactStrictMode: false,
-  swcMinify: true,
   productionBrowserSourceMaps: true,
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
@@ -25,6 +24,7 @@ const nextConfig = {
       },
     ],
   },
+  output: "standalone",
 };
 
 module.exports = nextConfig;
