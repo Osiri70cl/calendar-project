@@ -1,7 +1,7 @@
-@use "./_bases/_mixin";
-@use "./_bases/_fonts";
-@use "./_bases/_colors";
-@use "./_bases/_main";
+@use "./_bases/_mixin" as mixin;
+@use "./_bases/_fonts" as fonts;
+@use "./_bases/_colors" as colors;
+@use "./_bases/_main" as base;
 
 @use "./_modules/m-input";
 @use "./_modules/m-button";
