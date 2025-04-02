@@ -1,5 +1,5 @@
-import "@styles/globals.scss";
 import type { Metadata } from "next";
+import "../src/styles/globals.scss";
 
 export const metadata: Metadata = {
   title: "Calflow",
