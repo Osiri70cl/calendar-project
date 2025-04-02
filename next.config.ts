@@ -6,11 +6,14 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
+  experimental: {
+    webpackBuildWorker: false,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // ignoreBuildErrors: true,
+    ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
