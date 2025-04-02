@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const formData = await request.json();
     const res = await fetchPostLogin(formData);
     const expires = dayjs().add(1, "year").toDate();
-    cookies().set("token", res.token.token, { expires: expires });
+    (await cookies()).set("token", res.token.token, { expires: expires });
     return Response.json({ res });
   } catch (error: any) {
     return new Response(error.message, {

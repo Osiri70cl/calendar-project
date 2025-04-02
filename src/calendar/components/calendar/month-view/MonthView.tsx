@@ -31,7 +31,7 @@ interface MultiDayEventPosition {
 
 interface MonthViewProps {
   currentDate?: Date;
-  events?: CalendarEvent[];
+  events?: any[];
 }
 
 const MonthView = ({
@@ -229,7 +229,7 @@ const MonthView = ({
       </div>
 
       <div className={styles.calendarGrid} ref={calendarGridRef}>
-        {calendarWithEvents.weeks.map((week, weekIndex) => (
+        {calendarWithEvents.weeks.map((week: any, weekIndex: any) => (
           <div
             key={`week-${weekIndex}`}
             className={styles.weekRow}
@@ -265,7 +265,7 @@ const MonthView = ({
                   )}
                 </div>
               ))}
-            {week.map((day, dayIndex) => (
+            {week.map((day: any, dayIndex: any) => (
               <div
                 key={`day-${weekIndex}-${dayIndex}`}
                 className={`${styles.dayCell} 
@@ -279,34 +279,38 @@ const MonthView = ({
                 </div>
 
                 <div className={styles.eventsList}>
-                  {day.eventsByCategory.holiday?.map((event, eventIndex) => (
-                    <div
-                      key={`holiday-${weekIndex}-${dayIndex}-${eventIndex}`}
-                      className={`${styles.specialDay} ${
-                        event.color?.includes("4CAF50")
-                          ? styles.green
-                          : event.color?.includes("9C27B0")
-                            ? styles.purple
-                            : ""
-                      }`}
-                    >
-                      {event.title}
-                    </div>
-                  ))}
-                  {day.eventsByCategory.regular?.map((event, eventIndex) => (
-                    <div
-                      key={`event-${weekIndex}-${dayIndex}-${eventIndex}`}
-                      className={styles.event}
-                      style={{
-                        backgroundColor: event.color || undefined,
-                      }}
-                    >
-                      <span className={styles.eventTime}>
-                        {event.startTime}
-                      </span>
-                      <span className={styles.eventTitle}>{event.title}</span>
-                    </div>
-                  ))}
+                  {day.eventsByCategory.holiday?.map(
+                    (event: any, eventIndex: any) => (
+                      <div
+                        key={`holiday-${weekIndex}-${dayIndex}-${eventIndex}`}
+                        className={`${styles.specialDay} ${
+                          event.color?.includes("4CAF50")
+                            ? styles.green
+                            : event.color?.includes("9C27B0")
+                              ? styles.purple
+                              : ""
+                        }`}
+                      >
+                        {event.title}
+                      </div>
+                    )
+                  )}
+                  {day.eventsByCategory.regular?.map(
+                    (event: any, eventIndex: any) => (
+                      <div
+                        key={`event-${weekIndex}-${dayIndex}-${eventIndex}`}
+                        className={styles.event}
+                        style={{
+                          backgroundColor: event.color || undefined,
+                        }}
+                      >
+                        <span className={styles.eventTime}>
+                          {event.startTime}
+                        </span>
+                        <span className={styles.eventTitle}>{event.title}</span>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             ))}
