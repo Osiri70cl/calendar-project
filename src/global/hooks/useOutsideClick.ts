@@ -7,17 +7,17 @@ interface WindowSize {
   height: number | null;
 }
 
-export default function useOutsideClick(onOutsideClick: any) {
-  const ref = useRef(null);
+export default function useOutsideClick(onOutsideClick: () => void) {
+  const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (ref?.current && !ref?.current?.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref?.current && !ref.current.contains(event.target as Node)) {
         onOutsideClick();
       }
     }
 
-    function handleKeyDown(event: any) {
+    function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         onOutsideClick();
       }
