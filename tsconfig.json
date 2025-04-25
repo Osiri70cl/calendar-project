@@ -20,7 +20,18 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/api/*": ["./src/api/*"]
+      "@/api/*": ["./src/api/*"],
+      "@profile/*": ["./src/profile/*"],
+      "@settings/*": ["./src/settings/*"],
+      "@users/*": ["./src/users/*"],
+      "@auth/*": ["./src/auth/*"],
+      "@sprint/*": ["./src/sprint/*"],
+      "@timer/*": ["./src/timer/*"],
+      "@client/*": ["./src/client/*"],
+      "@utils/*": ["./src/global/utils/*"],
+      "@reducers/*": ["./src/global/redux/reducers/*"],
+      "@global/*": ["./src/global/*"],
+      "@src/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
