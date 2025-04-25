@@ -1,4 +1,4 @@
-import makeApiRequest from "@/global/utils/apiRequest";
+import makeApiRequest from "@global/utils/apiRequest";
 
 export async function fetchGetCalendar() {
   return await makeApiRequest("/calendar", "GET");
