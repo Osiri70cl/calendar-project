@@ -19,30 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/api/*": ["./src/api/*"],
-      "@/components/*": ["./src/components/*"],
-      "@context/*": ["./src/context/*"],
-      "@/hooks/*": ["./src/global/hooks/*"],
-      "@/libs/*": ["./src/libs/*"],
-      "@/types/*": ["./src/types/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@project/*": ["./src/project/*"],
-      "@admin/*": ["./src/admin/*"],
-      "@home/*": ["./src/home/*"],
-      "@plannif/*": ["./src/plannif/*"],
-      "@profile/*": ["./src/profile/*"],
-      "@settings/*": ["./src/settings/*"],
-      "@users/*": ["./src/users/*"],
-      "@auth/*": ["./src/auth/*"],
-      "@sprint/*": ["./src/sprint/*"],
-      "@timer/*": ["./src/timer/*"],
-      "@client/*": ["./src/client/*"],
-      "@utils/*": ["./src/global/utils/*"],
-      "@redux/*": ["./src/global/redux/*"],
-      "@reducers/*": ["./src/global/redux/reducers/*"],
-      "@global/*": ["./src/global/*"],
-      "@src/*": ["./src/*"]
+      "@/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

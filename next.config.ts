@@ -3,9 +3,6 @@ const path = require("path");
 const nextConfig = {
   reactStrictMode: false,
   productionBrowserSourceMaps: true,
-  sassOptions: {
-    includePaths: [path.join(__dirname, "styles")],
-  },
   experimental: {
     webpackBuildWorker: false,
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import useApi, { Methods } from "@/global/hooks/useApi";
+import useApi, { Methods } from "@global/hooks/useApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

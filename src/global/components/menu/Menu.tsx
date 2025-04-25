@@ -1,89 +1,66 @@
-"use client";
+import { Plus } from "lucide-react";
+import * as React from "react";
 
-import { MENU_CALENDAR_VIEW } from "@/global/constants/MenuCalendarView";
-import { MENU_CONSTANT } from "@/global/constants/MenuConstant";
-import { MENU_PROFIL_VIEW } from "@/global/constants/MenuProfilView";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
-import styles from "./Menu.module.scss";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  SidebarSeparator,
+} from "@/components/ui/sidebar";
+import { Calendars } from "../../../calendar/components/calendar/calendars";
+import { DatePicker } from "../datepicker/Datepicker";
+import { NavUser } from "./NavUser";
 
-const Menu = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const handleRedirectToPath = (path: string) => {
-    router.push(path);
-  };
-
-  const renderCorrectSubmenu = useMemo(() => {
-    if (pathname.includes("/profil")) {
-      return MENU_PROFIL_VIEW.map((item) => (
-        <div key={item.id} className={styles.item}>
-          <div
-            className={styles.iconSubmenu}
-            onClick={() => handleRedirectToPath(item.path)}
-          >
-            {item.icon}
-          </div>
-          <div className={styles.tooltip}>
-            <span>{item.title}</span>
-          </div>
-        </div>
-      ));
-    } else if (pathname.includes("/calendrier")) {
-      return MENU_CALENDAR_VIEW.map((item) => (
-        <div key={item.id} className={styles.item}>
-          <div
-            className={styles.iconSubmenu}
-            onClick={() => handleRedirectToPath(item.path)}
-          >
-            {item.icon}
-          </div>
-          <div className={styles.tooltip}>
-            <span>{item.title}</span>
-          </div>
-        </div>
-      ));
-    }
-
-    return null;
-  }, [pathname, handleRedirectToPath]);
-
-  const shouldShowSubmenu = (itemPath: string) => {
-    return (
-      (pathname.includes("/profil") && itemPath.includes("/profil")) ||
-      (pathname.includes("/calendrier") && itemPath.includes("/calendrier"))
-    );
-  };
-
-  const renderMenu = useMemo(() => {
-    return MENU_CONSTANT.map((item) => (
-      <div key={item.id} className={styles.item}>
-        <div
-          className={styles.icon}
-          onClick={() => handleRedirectToPath(item.path)}
-        >
-          {item.icon}
-        </div>
-        <div className={styles.tooltip}>
-          <span>{item.title}</span>
-        </div>
-        {shouldShowSubmenu(item.path) && (
-          <div className={styles.submenu}>{renderCorrectSubmenu}</div>
-        )}
-      </div>
-    ));
-  }, [renderCorrectSubmenu, shouldShowSubmenu, handleRedirectToPath]);
-
-  return (
-    <div className={styles.main}>
-      <div className={styles.logo}>
-        <Image src="/images/logoTemp.png" alt="Logo" width={100} height={40} />
-      </div>
-      <div className={styles.menu}>{renderMenu}</div>
-    </div>
-  );
+// This is sample data.
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  calendars: [
+    {
+      name: "My Calendars",
+      items: ["Personal", "Work", "Family"],
+    },
+    {
+      name: "Favorites",
+      items: ["Holidays", "Birthdays"],
+    },
+    {
+      name: "Other",
+      items: ["Travel", "Reminders", "Deadlines"],
+    },
+  ],
 };
 
-export default Menu;
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar {...props}>
+      <SidebarHeader className="h-16 border-b border-sidebar-border">
+        <NavUser user={data.user} />
+      </SidebarHeader>
+      <SidebarContent>
+        <DatePicker />
+        <SidebarSeparator className="mx-0" />
+        <Calendars calendars={data.calendars} />
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>
+              <Plus />
+              <span>New Calendar</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}
