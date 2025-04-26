@@ -14,7 +14,7 @@ import getDay from "date-fns/getDay";
 import frFR from "date-fns/locale/fr";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, dateFnsLocalizer, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -25,6 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Calendar1, ChevronLeft, ChevronRight } from "lucide-react";
 import "./calendar-custom.css";
 
 const locales = {
@@ -47,6 +48,18 @@ export default function CalendarPage() {
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
   const currentDay = currentDate.getDate();
+  const [isLargeScreen, setIsLargeScreen] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const myEventsList = [
     {
@@ -187,25 +200,25 @@ export default function CalendarPage() {
             onClick={goToPrev}
             className="px-3 py-1.5 bg-muted text-muted-foreground rounded-md hover:bg-muted/80"
           >
-            {messages.previous}
+            <ChevronLeft />
           </button>
           <button
             type="button"
             onClick={goToToday}
             className="px-3 py-1.5 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
           >
-            {messages.today}
+            {isLargeScreen ? messages.today : <Calendar1 />}
           </button>
           <button
             type="button"
             onClick={goToNext}
             className="px-3 py-1.5 bg-muted text-muted-foreground rounded-md hover:bg-muted/80"
           >
-            {messages.next}
+            <ChevronRight />
           </button>
         </div>
         <div className="flex gap-2">
-          {Views.WEEK && (
+          {isLargeScreen && Views.WEEK && (
             <button
               type="button"
               onClick={() => goToView(Views.WEEK)}
