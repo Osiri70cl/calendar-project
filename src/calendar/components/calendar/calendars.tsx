@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { useEffect, useState } from "react";
 
 export function Calendars({
   calendars,
@@ -24,6 +25,30 @@ export function Calendars({
     items: string[];
   }[];
 }) {
+  const [activeItems, setActiveItems] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (calendars.length > 0) {
+      const initialState: Record<string, boolean> = {};
+
+      calendars[0].items.forEach((item, index) => {
+        if (index < 2) {
+          initialState[`${calendars[0].name}-${item}`] = true;
+        }
+      });
+
+      setActiveItems(initialState);
+    }
+  }, [calendars]);
+
+  const toggleActive = (calendarName: string, itemName: string) => {
+    const key = `${calendarName}-${itemName}`;
+    setActiveItems((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
   return (
     <>
       {calendars.map((calendar, index) => (
@@ -37,7 +62,7 @@ export function Calendars({
                 asChild
                 className="group/label w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
-                <CollapsibleTrigger>
+                <CollapsibleTrigger className="cursor-pointer">
                   {calendar.name}{" "}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
@@ -45,19 +70,26 @@ export function Calendars({
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {calendar.items.map((item, index) => (
-                      <SidebarMenuItem key={item}>
-                        <SidebarMenuButton>
-                          <div
-                            data-active={index < 2}
-                            className="group/calendar-item flex aspect-square size-4 shrink-0 items-center justify-center rounded-sm border border-sidebar-border text-sidebar-primary-foreground data-[active=true]:border-sidebar-primary data-[active=true]:bg-sidebar-primary"
+                    {calendar.items.map((item) => {
+                      const isActive =
+                        activeItems[`${calendar.name}-${item}`] || false;
+                      return (
+                        <SidebarMenuItem key={item}>
+                          <SidebarMenuButton
+                            className="cursor-pointer"
+                            onClick={() => toggleActive(calendar.name, item)}
                           >
-                            <Check className="hidden size-3 group-data-[active=true]/calendar-item:block" />
-                          </div>
-                          {item}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
+                            <div
+                              data-active={isActive}
+                              className="group/calendar-item flex aspect-square size-4 shrink-0 items-center justify-center rounded-sm border border-sidebar-border text-sidebar-primary-foreground data-[active=true]:border-sidebar-primary data-[active=true]:bg-sidebar-primary"
+                            >
+                              <Check className="hidden size-3 group-data-[active=true]/calendar-item:block" />
+                            </div>
+                            {item}
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
                   </SidebarMenu>
                 </SidebarGroupContent>
               </CollapsibleContent>

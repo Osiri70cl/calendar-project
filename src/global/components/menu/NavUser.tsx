@@ -3,10 +3,10 @@
 import {
   Bell,
   ChevronsUpDown,
+  HelpCircle,
   LogOut,
   Settings2,
   UserCogIcon,
-  UserSquareIcon,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -102,23 +102,21 @@ export function NavUser({
                 onClick={() => handleRedirect("/reglages")}
               >
                 <Settings2 />
-                Réglages du calendrier
+                Réglages
               </DropdownMenuItem>
-
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => handleRedirect("/rendez-vous")}
-              >
-                <UserSquareIcon />
-                Mes rendez-vous
-              </DropdownMenuItem>
-
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={() => handleRedirect("/notifications")}
               >
                 <Bell />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => handleRedirect("/aide")}
+              >
+                <HelpCircle />
+                Aide
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

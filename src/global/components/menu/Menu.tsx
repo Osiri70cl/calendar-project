@@ -1,19 +1,18 @@
-import { Plus } from "lucide-react";
+"use client";
+import { AlarmClockCheck, Calendar1, CalendarDays } from "lucide-react";
 import * as React from "react";
 
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
 import { Calendars } from "../../../calendar/components/calendar/calendars";
 import { DatePicker } from "../datepicker/Datepicker";
+import { NavMain } from "./NavMain";
 import { NavUser } from "./NavUser";
 
 // This is sample data.
@@ -23,43 +22,51 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
+  navMain: [
+    {
+      title: "Calendrier",
+      url: "/calendrier",
+      icon: CalendarDays,
+    },
+    {
+      title: "Événements",
+      url: "/evenements",
+      icon: Calendar1,
+    },
+    {
+      title: "Rendez-vous",
+      url: "/rendez-vous",
+      icon: AlarmClockCheck,
+    },
+  ],
   calendars: [
     {
-      name: "My Calendars",
-      items: ["Personal", "Work", "Family"],
+      name: "Mes catégories",
+      items: ["Privé", "Public", "Indisponible"],
     },
     {
-      name: "Favorites",
-      items: ["Holidays", "Birthdays"],
-    },
-    {
-      name: "Other",
-      items: ["Travel", "Reminders", "Deadlines"],
+      name: "Calendriers partagés",
+      items: ["Uxer", "Benoit", "Pauline"],
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathName = usePathname();
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-16 border-b border-sidebar-border">
         <NavUser user={data.user} />
       </SidebarHeader>
       <SidebarContent>
+        <NavMain items={data.navMain} />
         <DatePicker />
         <SidebarSeparator className="mx-0" />
-        <Calendars calendars={data.calendars} />
+        {pathName === "/calendrier" || pathName === "/evenements" ? (
+          <Calendars calendars={data.calendars} />
+        ) : null}
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Plus />
-              <span>New Calendar</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
