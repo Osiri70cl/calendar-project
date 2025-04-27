@@ -5,6 +5,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { HelpGeneralComponent } from "@/src/help/components/HelpGeneralComponent";
 import { Separator } from "@radix-ui/react-separator";
 
 export default function Help() {
@@ -16,18 +17,12 @@ export default function Help() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbPage>Aide</BreadcrumbPage>
+              <BreadcrumbPage className="text-xl">Aide</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </header>
-      <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-5">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div key={i} className="aspect-square rounded-xl bg-muted/50" />
-          ))}
-        </div>
-      </div>
+      <HelpGeneralComponent />
     </div>
   );
 }

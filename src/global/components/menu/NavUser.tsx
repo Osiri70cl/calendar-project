@@ -2,7 +2,7 @@
 
 import {
   Bell,
-  ChevronsUpDown,
+  ChevronDown,
   HelpCircle,
   LogOut,
   Settings2,
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +39,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
+  const notificationCount = 4; // Hardcoded for now as requested
 
   const handleRedirect = (path: string) => {
     router.push(path);
@@ -64,7 +66,7 @@ export function NavUser({
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -91,7 +93,7 @@ export function NavUser({
                 className="cursor-pointer"
                 onClick={() => handleRedirect("/profil")}
               >
-                <UserCogIcon />
+                <UserCogIcon className="h-4 w-4 mr-2" />
                 Mon profil
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -101,27 +103,34 @@ export function NavUser({
                 className="cursor-pointer"
                 onClick={() => handleRedirect("/reglages")}
               >
-                <Settings2 />
+                <Settings2 className="h-4 w-4 mr-2" />
                 Réglages
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="cursor-pointer"
+                className="cursor-pointer flex items-center justify-between"
                 onClick={() => handleRedirect("/notifications")}
               >
-                <Bell />
-                Notifications
+                <div className="flex items-center">
+                  <Bell className="h-4 w-4 mr-2" />
+                  Notifications
+                </div>
+                {notificationCount > 0 && (
+                  <Badge className="ml-2 px-1.5 py-0 h-5 min-w-5 flex items-center justify-center bg-primary text-primary-foreground text-xs font-medium">
+                    {notificationCount}
+                  </Badge>
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={() => handleRedirect("/aide")}
               >
-                <HelpCircle />
+                <HelpCircle className="h-4 w-4 mr-2" />
                 Aide
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
-              <LogOut />
+              <LogOut className="h-4 w-4 mr-2" />
               Déconnexion
             </DropdownMenuItem>
           </DropdownMenuContent>

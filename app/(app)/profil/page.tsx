@@ -5,6 +5,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { GeneralProfilComponent } from "@/src/profil/components/general-profil-component/GeneralProfilComponent";
 import { Separator } from "@radix-ui/react-separator";
 
 export default function Profile() {
@@ -16,11 +17,16 @@ export default function Profile() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbPage>Profil</BreadcrumbPage>
+              <BreadcrumbPage className="text-xl">Profil</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </header>
+      <div className="flex w-full items-center justify-center p-6 md:p-10">
+        <div className="w-full">
+          <GeneralProfilComponent />
+        </div>
+      </div>
     </div>
   );
 }

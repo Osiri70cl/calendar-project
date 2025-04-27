@@ -281,7 +281,9 @@ export default function CalendarPage() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbPage>{formatHeader()}</BreadcrumbPage>
+              <BreadcrumbPage className="text-xl">
+                {formatHeader()}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
