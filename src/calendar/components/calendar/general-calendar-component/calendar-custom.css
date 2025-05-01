@@ -1,0 +1,238 @@
+/* Styles généraux du calendrier */
+.custom-calendar {
+  font-family: var(--font-sans);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--foreground);
+}
+
+/* Styles globaux */
+button {
+  cursor: pointer;
+}
+
+/* Vue mensuelle */
+.custom-calendar .rbc-month-view {
+  border-radius: 0.75rem;
+  border: none;
+}
+
+/* Correction pour l'alignement des cellules de jour */
+.custom-calendar .rbc-month-row {
+  display: flex;
+  flex: 1;
+  min-height: 100px;
+  overflow: visible !important; /* Important pour les événements multi-jours */
+}
+
+.custom-calendar .rbc-row-bg {
+  display: flex;
+  flex: 1;
+}
+
+.custom-calendar .rbc-day-bg {
+  flex: 1;
+  background-color: var(--card);
+  transition: background-color 0.2s;
+}
+
+.custom-calendar .rbc-day-bg:hover {
+  background-color: var(--accent);
+}
+
+.custom-calendar .rbc-today {
+  background-color: var(--accent);
+}
+
+.custom-calendar .rbc-off-range {
+  opacity: 0.5;
+}
+
+.custom-calendar .rbc-row-content {
+  position: relative;
+  z-index: 4 !important; /* Important pour que les événements soient visibles */
+}
+
+/* Cellules de date */
+.custom-calendar .rbc-date-cell {
+  display: flex;
+  flex-direction: column;
+  padding-right: 3px;
+  text-align: right;
+}
+
+/* En-têtes */
+.custom-calendar .rbc-header {
+  color: #fff;
+  background-color: var(--secondary);
+  font-weight: 600;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  flex: 1;
+}
+
+/* Événements - styles de base */
+.custom-calendar .rbc-event {
+  background-color: var(--primary);
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  box-shadow: none;
+  margin-bottom: 2px;
+  z-index: 5 !important; /* S'assurer que les événements sont au-dessus des autres éléments */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-calendar .rbc-event:hover {
+  transform: none;
+  box-shadow: none;
+  background-color: var(--muted) !important;
+}
+
+/* Masquer le libellé "toute la journée" pour gagner de l'espace */
+.custom-calendar .rbc-event-label {
+  display: none;
+}
+
+/* Événements sélectionnés */
+.custom-calendar .rbc-event.rbc-selected {
+  background-color: var(--primary) !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.custom-calendar .rbc-event.rbc-selected:hover {
+  background-color: var(--muted) !important;
+}
+
+/* Styles spécifiques pour les événements multi-jours */
+.custom-calendar .rbc-row-segment {
+  padding: 0 2px;
+  position: relative;
+  z-index: 3;
+}
+
+.custom-calendar .rbc-row-segment .rbc-event.rbc-event-continues-prior {
+  border-top-left-radius: 0;
+}
+
+.custom-calendar .rbc-row-segment .rbc-event.rbc-event-continues-after {
+  border-bottom-right-radius: 0;
+}
+
+/* S'assurer que les événements multi-jours sont bien visibles */
+.custom-calendar .rbc-event.rbc-event-allday {
+  background-color: var(--primary);
+  opacity: 0.9;
+  display: block !important;
+}
+
+/* Vue temporelle */
+.custom-calendar .rbc-time-view {
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.custom-calendar .rbc-time-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.custom-calendar .rbc-time-content {
+  border-top: 1px solid var(--border);
+}
+
+.custom-calendar .rbc-timeslot-group {
+  border-bottom: 1px solid var(--border);
+}
+
+.custom-calendar .rbc-time-slot {
+  color: white;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 25px;
+  max-height: 25px;
+}
+
+.custom-calendar .rbc-time-view .rbc-time-gutter {
+  font-weight: 500;
+  color: var(--primary-foreground);
+  background-color: var(--secondary);
+}
+
+.custom-calendar .rbc-time-header-content .rbc-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.custom-calendar .rbc-timeslot-group:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.custom-calendar .rbc-current-time-indicator {
+  background-color: var(--primary);
+  height: 2px;
+}
+
+/* Limiter la hauteur de la zone des événements "toute la journée" */
+.custom-calendar .rbc-allday-cell {
+  max-height: 60px;
+  overflow: auto;
+  display: block !important;
+  min-height: 30px;
+}
+
+.custom-calendar .rbc-time-view .rbc-allday-cell {
+  height: auto;
+  max-height: 30px;
+}
+
+.custom-calendar .rbc-time-view .rbc-allday-cell:empty {
+  display: none;
+}
+
+.custom-calendar .rbc-day-slot .rbc-events-container {
+  margin-top: 0;
+}
+
+/* Vue agenda */
+.custom-calendar .rbc-agenda-view table.rbc-agenda-table {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.custom-calendar .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  background-color: var(--muted);
+  padding: 0.5rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+.custom-calendar .rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Barre d'outils personnalisée */
+.custom-toolbar {
+  margin-bottom: 1rem;
+}
+
+.custom-toolbar .rbc-toolbar-label {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.custom-calendar .rbc-show-more {
+  background-color: transparent;
+  color: #fff;
+}
+
+.custom-calendar .rbc-show-more:hover {
+  background-color: transparent;
+  color: var(--primary);
+}
+
+.custom-calendar .rbc-row-bg {
+  right: 0;
+}
