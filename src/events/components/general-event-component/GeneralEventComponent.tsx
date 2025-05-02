@@ -1,5 +1,4 @@
 "use client";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,13 +6,15 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CreateEventDialog from "@/src/calendar/components/calendar/create-event/CreateEventDialog";
+import ViewEventDialog from "@/src/calendar/components/calendar/view-event/ViewEventDialog";
 import { Separator } from "@radix-ui/react-separator";
-import { format } from "date-fns";
-import { CalendarClock, Link, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import EventCard from "../event-card/EventCard";
 
 type Props = {
   allEvents: any[];
@@ -21,10 +22,28 @@ type Props = {
 
 const GeneralEventComponent = ({ allEvents }: Props) => {
   const [activeTab, setActiveTab] = useState("upcoming");
-  const currentDate = new Date();
+  const methods = useForm({
+    defaultValues: {
+      user: {
+        firstName: "Remi",
+        lastName: "Uxer",
+        email: "remi@uxer.fr",
+        telephone: "+33612345678",
+      },
+      events: allEvents,
+      selectedEvent: {},
+      eventCreation: {},
+    },
+  });
+  const { setValue, watch } = methods;
+  const [newEventSlot, setNewEventSlot] = useState<any>(null);
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const events = watch("events");
+
   const { upcomingEvents, pastEvents } = useMemo(() => {
     const referenceDate = new Date();
-    const processedEvents = allEvents.map((event) => ({
+    const processedEvents = events.map((event) => ({
       ...event,
       dateObj: new Date(event.startDate),
       attendees: event.participants
@@ -33,137 +52,129 @@ const GeneralEventComponent = ({ allEvents }: Props) => {
           }))
         : [],
     }));
+
+    const upcoming = processedEvents.filter(
+      (event) => new Date(event.endDate) >= referenceDate
+    );
+
+    const past = processedEvents.filter(
+      (event) => new Date(event.endDate) < referenceDate
+    );
+
+    const sortedUpcoming = upcoming.sort(
+      (a, b) => a.dateObj.getTime() - b.dateObj.getTime()
+    );
+
+    const sortedPast = past.sort(
+      (a, b) => b.dateObj.getTime() - a.dateObj.getTime()
+    );
+
     return {
-      upcomingEvents: processedEvents.filter(
-        (event) => new Date(event.endDate) >= referenceDate
-      ),
-      pastEvents: processedEvents.filter(
-        (event) => new Date(event.endDate) < referenceDate
-      ),
+      upcomingEvents: sortedUpcoming,
+      pastEvents: sortedPast,
     };
-  }, [allEvents]);
+  }, [events]);
 
-  const EventCard = ({ event }: any) => (
-    <Card
-      className="overflow-hidden aspect-square flex flex-col py-0 cursor-pointer"
-      style={{ gap: "12px" }}
-    >
-      <div
-        className="bg-primary/20 flex items-center justify-center h-1/3"
-        style={{ minHeight: "33%" }}
-      >
-        <div className="bg-white p-3 rounded-md shadow-sm ">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-primary"
-          >
-            <rect width="18" height="18" x="3" y="3" rx="2" />
-            <path d="M3 9h18" />
-            <path d="M9 21V9" />
-            <path d="m16 15-3-3-3 3" />
-          </svg>
-        </div>
-      </div>
-      <CardContent className="p-3 flex flex-col" style={{ gap: "4px" }}>
-        <div className="text-xs flex items-center text-muted-foreground mb-1">
-          <CalendarClock className="mr-1 w-4 h-4" />
-          Du{" "}
-          {event?.startDate
-            ? format(new Date(event.startDate), "dd/MM/yyyy")
-            : "Date à définir"}{" "}
-          au{" "}
-          {event?.endDate
-            ? format(new Date(event.endDate), "dd/MM/yyyy")
-            : "Date à définir"}
-        </div>
-        <h3 className="font-medium text-sm truncate">
-          {event?.name || "Événement"}
-        </h3>
-        <div className="flex items-center text-xs text-muted-foreground mt-1">
-          <Link className="mr-1 w-4 h-4" />
-          {event?.link || "lien à définir"}
-        </div>
-      </CardContent>
-      <CardFooter className="p-3 pt-0 mt-auto">
-        <div className="flex -space-x-2">
-          {event?.attendees?.slice(0, 3).map((attendee: any, index: any) => (
-            <Avatar key={index} className="border-2 border-background w-7 h-7">
-              <AvatarFallback>{attendee.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-          ))}
+  const handleCreateEventClick = () => {
+    setNewEventSlot({
+      start: new Date(),
+      end: new Date(new Date().getTime() + 60 * 60 * 1000),
+      slots: [new Date()],
+      action: "click",
+    });
+    const currentDate = new Date();
+    const dataOfSelectedEvent = {
+      startDate: currentDate.toISOString(),
+      endDate: currentDate.toISOString(),
+    };
+    setValue("selectedEvent", dataOfSelectedEvent);
+    setIsCreateEventOpen(true);
+  };
 
-          {event?.attendees && event.attendees.length > 3 && (
-            <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center text-xs border-2 border-background">
-              +{event.attendees.length - 3}
-            </div>
-          )}
-        </div>
-      </CardFooter>
-    </Card>
-  );
+  const handleSelectEvent = (event: any) => {
+    console.log(event);
+    setValue("selectedEvent", event);
+    setIsViewDialogOpen(true);
+  };
 
   return (
-    <div className="flex flex-col h-full">
-      <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-xl">
-                Vos événements
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </header>
-      <div className="flex-1 flex flex-col p-4 overflow-hidden">
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="w-full flex-1 flex flex-col"
-        >
-          <div className="flex justify-between items-center mb-4">
-            <TabsList>
-              <TabsTrigger value="upcoming" className="px-4">
-                À venir
-              </TabsTrigger>
-              <TabsTrigger value="past" className="px-4">
-                Passés
-              </TabsTrigger>
-            </TabsList>
-            <Button size="sm">
-              <PlusIcon className="h-4 w-4 mr-2" />
-              Nouvel événement
-            </Button>
-          </div>
-          <div className="flex-1 overflow-auto">
-            <TabsContent value="upcoming" className="mt-0 h-full">
-              <div className="grid auto-rows-min gap-4 grid-cols-1 gridQueries">
-                {upcomingEvents.map((event, i) => (
-                  <EventCard key={`upcoming-${event.id}`} event={event} />
-                ))}
-              </div>
-            </TabsContent>
-            <TabsContent value="past" className="mt-0 h-full">
-              <div className="grid auto-rows-min gap-4 grid-cols-1 gridQueries">
-                {pastEvents.map((event, i) => (
-                  <EventCard key={`past-${event.id}`} event={event} />
-                ))}
-              </div>
-            </TabsContent>
-          </div>
-        </Tabs>
+    <FormProvider {...methods}>
+      <div className="flex flex-col h-full">
+        <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage className="text-xl">
+                  Vos événements
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        <div className="flex-1 flex flex-col p-4 overflow-hidden">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full flex-1 flex flex-col"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <TabsList>
+                <TabsTrigger value="upcoming" className="px-4">
+                  À venir
+                </TabsTrigger>
+                <TabsTrigger value="past" className="px-4">
+                  Passés
+                </TabsTrigger>
+              </TabsList>
+              <Button
+                size="sm"
+                onClick={handleCreateEventClick}
+                className="cursor-pointer"
+              >
+                <PlusIcon className="h-4 w-4 mr-2" />
+                Nouvel événement
+              </Button>
+            </div>
+            <div className="flex-1 overflow-auto">
+              <TabsContent value="upcoming" className="mt-0 h-full">
+                <div className="grid auto-rows-min gap-4 grid-cols-1 gridQueries">
+                  {upcomingEvents.map((event, i) => (
+                    <EventCard
+                      key={`upcoming-${event.id}`}
+                      event={event}
+                      handleSelectEvent={handleSelectEvent}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+              <TabsContent value="past" className="mt-0 h-full">
+                <div className="grid auto-rows-min gap-4 grid-cols-1 gridQueries">
+                  {pastEvents.map((event, i) => (
+                    <EventCard
+                      key={`past-${event.id}`}
+                      event={event}
+                      handleSelectEvent={handleSelectEvent}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+            </div>
+          </Tabs>
+        </div>
       </div>
-    </div>
+      <CreateEventDialog
+        open={isCreateEventOpen}
+        onOpenChange={setIsCreateEventOpen}
+        eventSlot={newEventSlot}
+      />
+      <ViewEventDialog
+        open={isViewDialogOpen}
+        onOpenChange={setIsViewDialogOpen}
+        event={watch("selectedEvent")}
+      />
+    </FormProvider>
   );
 };
 

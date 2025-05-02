@@ -15,6 +15,7 @@ import Loader from "@/src/icons/Loader";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function LoginForm({
   className,
@@ -37,6 +38,9 @@ export function LoginForm({
 
   useEffect(() => {
     if (response) {
+      toast("Connexion réussie", {
+        description: "Vous êtes maintenant connecté",
+      });
       router.push("/calendrier");
     }
   }, [response]);

@@ -15,3 +15,7 @@ export async function fetchShareEventById(id: number) {
 export async function fetchCreateEvent(event: any) {
   return await makeApiRequest("/events", "POST", event);
 }
+
+export async function fetchUpdateEvent(id: number, event: any) {
+  return await makeApiRequest(`/events/${id}`, "PUT", event);
+}

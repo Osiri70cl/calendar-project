@@ -25,11 +25,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import useApi, { Methods } from "@/src/global/hooks/useApi";
+import Loader from "@/src/icons/Loader";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { CalendarIcon, Link2, MapPin, Users } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { toast } from "sonner";
 
 const generateTimeOptions = () => {
   const options = [];
@@ -96,6 +98,7 @@ export default function CreateEventDialog({ open, onOpenChange }: any) {
 
   useEffect(() => {
     if (response && response.res) {
+      toast("Événement créé");
       setValue("events", response.res);
       setValue("selectedEvent", {});
       setValue("eventCreation", {});
@@ -104,6 +107,7 @@ export default function CreateEventDialog({ open, onOpenChange }: any) {
 
   useEffect(() => {
     if (error) {
+      toast("Une erreur est survenue lors de la création de l'événement");
       setValue("selectedEvent", {});
       setValue("eventCreation", {});
     }
@@ -156,43 +160,50 @@ export default function CreateEventDialog({ open, onOpenChange }: any) {
               <FormField
                 control={control}
                 name="eventCreation.startDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <div className="flex items-center">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "pl-3 text-left font-normal w-full",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "d MMMM yyyy", {
-                                  locale: fr,
-                                })
-                              ) : (
-                                <span>Choisir une date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            locale={fr}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const [open, setOpen] = useState(false);
+
+                  return (
+                    <FormItem className="flex flex-col">
+                      <div className="flex items-center">
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "pl-3 text-left font-normal w-full",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "d MMMM yyyy", {
+                                    locale: fr,
+                                  })
+                                ) : (
+                                  <span>Choisir une date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setOpen(false);
+                              }}
+                              initialFocus
+                              locale={fr}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </FormItem>
+                  );
+                }}
               />
               <FormField
                 control={control}
@@ -224,43 +235,50 @@ export default function CreateEventDialog({ open, onOpenChange }: any) {
               <FormField
                 control={control}
                 name="eventCreation.endDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <div className="flex items-center">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "pl-3 text-left font-normal w-full",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "d MMMM yyyy", {
-                                  locale: fr,
-                                })
-                              ) : (
-                                <span>Choisir une date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            locale={fr}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const [open, setOpen] = useState(false);
+
+                  return (
+                    <FormItem className="flex flex-col">
+                      <div className="flex items-center">
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "pl-3 text-left font-normal w-full",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "d MMMM yyyy", {
+                                    locale: fr,
+                                  })
+                                ) : (
+                                  <span>Choisir une date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setOpen(false);
+                              }}
+                              initialFocus
+                              locale={fr}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </FormItem>
+                  );
+                }}
               />
               <FormField
                 control={control}
@@ -358,16 +376,22 @@ export default function CreateEventDialog({ open, onOpenChange }: any) {
               )}
             />
             <div className="flex justify-between mt-4">
-              <Button variant="outline" type="button" onClick={handleClose}>
+              <Button
+                variant="outline"
+                className="cursor-pointer"
+                type="button"
+                onClick={handleClose}
+              >
                 Annuler
               </Button>
               <div className="flex gap-2">
                 <Button
                   type="button"
+                  className="cursor-pointer"
                   onClick={handleSubmit(onSubmit)}
                   disabled={loading}
                 >
-                  Enregistrer
+                  {loading ? <Loader /> : "Enregistrer"}
                 </Button>
               </div>
             </div>
