@@ -6,6 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { FormProvider, useForm } from "react-hook-form";
 import "./calendar-custom.css";
 
+import { addMinutes, differenceInCalendarDays } from "date-fns";
 import { format } from "date-fns/format";
 import { getDay } from "date-fns/getDay";
 import { fr } from "date-fns/locale/fr";
@@ -22,6 +23,8 @@ import CalendarToolbar from "@/src/calendar/components/calendar/calendar-toolbar
 import CreateEventDialog from "@/src/calendar/components/calendar/create-event/CreateEventDialog";
 import EventComponent from "@/src/calendar/components/calendar/event-component/EventComponent";
 import ViewEventDialog from "@/src/calendar/components/calendar/view-event/ViewEventDialog";
+import { isExactlyMidnight } from "@/src/calendar/utils/isExactlyMidnight";
+import { isFrenchMidnight } from "@/src/calendar/utils/isFrenchMidnight";
 
 const frenchMessages = {
   allDay: "Journée",
@@ -98,6 +101,7 @@ export function GeneralCalendarComponent({
     setSelectedEvent(originalEvent);
     setIsViewDialogOpen(true);
   };
+
   const handleSelectSlot = (slotInfo: any) => {
     const startDate = slotInfo.start;
     const endDate = slotInfo.end;
@@ -141,27 +145,31 @@ export function GeneralCalendarComponent({
 
   const renderCalendar = useMemo(() => {
     const adaptedEvents = events.map((event) => {
-      const start = new Date(event.startDate);
-      const end = new Date(event.endDate);
-      let adjustedEnd = end;
-      if (start.getTime() === end.getTime()) {
-        adjustedEnd = new Date(start.getTime() + 30 * 60 * 1000);
+      const eventStartDate = event.startDate || event.start;
+      const eventEndDate = event.endDate || event.end;
+      const start = new Date(eventStartDate);
+      const end = new Date(eventEndDate);
+      const daysBetween = differenceInCalendarDays(end, start);
+      let adjustedEnd = new Date(end);
+      if (isExactlyMidnight(end) || isFrenchMidnight(end)) {
+        adjustedEnd = new Date(end.getTime() + 30 * 1000);
       }
-      const startDay = new Date(
-        start.getFullYear(),
-        start.getMonth(),
-        start.getDate()
-      );
-      const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-      const isMultiDay = startDay.getTime() !== endDay.getTime();
+      if (start.getTime() === end.getTime()) {
+        adjustedEnd = addMinutes(start, 30);
+      }
+      const isMultiDay =
+        daysBetween > 0 ||
+        event.allDay === true ||
+        isExactlyMidnight(end) ||
+        isFrenchMidnight(end);
 
       return {
         id: event.id,
-        title: event.name,
+        title: event.name || event.title,
         start: start,
         end: adjustedEnd,
         allDay: isMultiDay,
-        resource: event.visibility,
+        resource: event.visibility || event.resource,
       };
     });
 

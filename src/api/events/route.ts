@@ -8,6 +8,10 @@ export async function fetchGetEventUsers(id: number) {
   return await makeApiRequest(`/events/user`, "GET");
 }
 
+export async function fetchGetEventById(id: number) {
+  return await makeApiRequest(`/events/${id}`, "GET");
+}
+
 export async function fetchShareEventById(id: number) {
   return await makeApiRequest(`/events/${id}/share`, "POST");
 }

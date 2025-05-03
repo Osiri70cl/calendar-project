@@ -14,7 +14,7 @@ async function makeApiRequest(
   retries = 3
 ) {
   const cookieStore = await cookies();
-  const tokenData = cookieStore.get("token");
+  const tokenData = cookieStore.get("tokenCalflow");
   const apiKey = "test";
 
   const config: AxiosRequestConfig = {

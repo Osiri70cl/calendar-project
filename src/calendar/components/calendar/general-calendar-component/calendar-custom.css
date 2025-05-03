@@ -183,7 +183,7 @@ button {
 
 .custom-calendar .rbc-time-view .rbc-allday-cell {
   height: auto;
-  max-height: 30px;
+  /* max-height: 30px; */
 }
 
 .custom-calendar .rbc-time-view .rbc-allday-cell:empty {
@@ -235,4 +235,13 @@ button {
 
 .custom-calendar .rbc-row-bg {
   right: 0;
+}
+
+.custom-calendar .rbc-show-more {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .custom-calendar .rbc-show-more {
+    display: block;
+  }
 }

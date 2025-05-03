@@ -26,7 +26,8 @@ import { cn } from "@/lib/utils";
 import useApi, { Methods } from "@/src/global/hooks/useApi";
 import Loader from "@/src/icons/Loader";
 
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
+
 import { fr } from "date-fns/locale";
 import {
   ArrowUpRightFromSquareIcon,
@@ -103,7 +104,7 @@ export default function ViewEventDialog({ open, onOpenChange, event }: any) {
   };
 
   const handleRedirectToSingleEvent = () => {
-    window.location.href = `/evenement/${event.id}`;
+    window.location.href = `/evenements/${event.id}`;
   };
 
   const onSubmit = (data: any) => {
@@ -381,7 +382,11 @@ export default function ViewEventDialog({ open, onOpenChange, event }: any) {
 
   const renderDisplayDate = useMemo(() => {
     if (!event) return null;
-    if (event.startDate === event.endDate) {
+
+    const startDate = new Date(event.startDate);
+    const endDate = new Date(event.endDate);
+
+    if (isSameDay(startDate, endDate)) {
       return (
         <div className="text-base">{formatEventDate(event?.startDate)}</div>
       );
